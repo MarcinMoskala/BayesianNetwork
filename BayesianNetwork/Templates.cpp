@@ -64,7 +64,8 @@ std::vector<_Ty2> map(std::vector<_Ty> iterable, _Fn1 _Func)
 {
 	std::vector<_Ty2> v = std::vector<_Ty2>();
 	for (auto const& value : iterable) {
-		v.push_back(_Func(value));
+		_Ty2 newVal = _Func(value);
+		v.push_back(newVal);
 	}
 	return v;
 }

@@ -11,6 +11,7 @@ private:
 	vector<vector<int>> params;
 
 	// Number of param from 0 in column
+	// Rows are the columns of data!
 	vector<vector<int>> data;
 
 	DataSet() {};
@@ -21,6 +22,10 @@ public:
 
 	vector<vector<int>> valuesInRow(int row) {
 		return data;
+	}
+
+	vector<vector<int>> getParams() {
+		return params;
 	}
 
 	int rowNum() {
