@@ -126,14 +126,14 @@ namespace TimeSeriesToolkit
 		{
 			DataSet data = DataSet(vector<vector<int>>{
 				vector<int>{ 1, 2 },
-					vector<int>{ 2, 1 },
-					vector<int>{ 1, 2 }
+					vector<int>{ 2, 2 },
+					vector<int>{ 1, 1 }
 			});
 			Assert::AreEqual(vector<string> { "1", "2" }, data.paramsForColumn(0));
 			Assert::AreEqual(vector<string> { "2", "1" }, data.paramsForColumn(1));
 
 			Assert::AreEqual(
-				vector<vector<int>> { vector<int> { 0, 1, 0 }, vector<int> { 1, 0, 1 } },
+				vector<vector<int>> { vector<int> { 0, 1, 0 }, vector<int> { 0, 0, 1 } },
 				data.valuesInRow(0)
 			);
 		}
