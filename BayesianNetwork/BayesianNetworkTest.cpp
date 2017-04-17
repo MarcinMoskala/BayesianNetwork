@@ -39,5 +39,15 @@ namespace BN
 			Assert::AreEqual(vector<long double>{ 0.0, 0.0, 0.0 }, bn.evaluate(vector<int>{ 2, 3, 1 }));
 			Assert::AreEqual(vector<long double>{ 0.0, 0.0, 0.0 }, bn.evaluate(vector<int>{ 3, 1, 2 }));
 		}
+
+		TEST_METHOD(Equaly_distributed_elements_are_equaly_probable)
+		{
+			BayesianNetwork bn = BayesianNetwork(DataSet(vector<vector<int>>{
+					vector<int>{ 1 },
+					vector<int>{ 2 }
+			}));
+			//Assert::AreEqual(vector<long double>{ 0.5 }, bn.evaluate(vector<int>{ 1 }));
+			Assert::AreEqual(vector<long double>{ 0.5 }, bn.evaluate(vector<int>{ 2 }));
+		}
 	};
 }

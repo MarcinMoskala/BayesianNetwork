@@ -53,6 +53,11 @@ namespace Microsoft {
 			}
 
 			template<>
+			static wstring ToString<long double>(const long double & coord) {
+				return longDoubleToWString(coord);
+			}
+
+			template<>
 			static wstring ToString<vector<long double>>(const vector<long double> & coord) {
 				wstring str = L"{ ";
 				for_each(coord.begin(), coord.end(), [&str](long double i) -> void { str += longDoubleToWString(i) + L", "; });

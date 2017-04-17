@@ -4,7 +4,7 @@
 
 vector<vector<long double>> matrixOf(int c, int r, long double value) {
 	vector<vector<long double>> m = {};
-	for (int i = 0; i < c; i++) {
+	for (int i = 0; i < r; i++) {
 		vector<long double> v = {};
 		for (int j = 0; j < c; j++)
 			v.push_back(value);
@@ -22,7 +22,7 @@ vector<vector<long double>> ones(int c, int r) {
 }
 
 vector<vector<long double>> equallyDistributedRows(int c, int r) {
-	long double p = 1.0L / c;
+	long double p = 1.0L / r;
 	return matrixOf(c, r, p);
 }
 
@@ -94,9 +94,10 @@ long double BayesianNetwork::Node::probabilityOf(int valueParam)
 	if (index < 0 || index >= probabilities.size())
 		return 0.0L;
 	auto probs = probabilities.at(index);
-	return sumBy(probs, 0.0L, [this](long double p) -> int {
+	long double sumOfP = sumBy(probs, 0.0L, [this](long double p) -> long double {
 		return p;
 	});
+	return sumOfP;
 }
 
 BayesianNetwork::Node::Node(vector<int> params)

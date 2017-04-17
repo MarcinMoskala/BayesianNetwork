@@ -69,5 +69,12 @@ namespace BayesianNetwork
 				return b;
 			}));
 		}
+		TEST_METHOD(sumBy_tests)
+		{
+			Assert::AreEqual(0, sumBy(vector<int> { }, 0, [](int i) -> int { return i; }));
+			Assert::AreEqual(1, sumBy(vector<int> { 1 }, 0, [](int i) -> int { return i; }));
+			Assert::AreEqual(6, sumBy(vector<int> { 1, 2, 3 }, 0, [](int i) -> int { return i; }));
+			Assert::AreEqual(1.0L, sumBy(vector<int> { 2, 4, 4 }, 0.0L, [](int i) -> long double { return 1.0L / i; }));
+		}
 	};
 }
