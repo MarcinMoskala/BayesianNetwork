@@ -1,12 +1,6 @@
 #include "stdafx.h"
 #include "BayesianNetwork.h"
 
-
-BayesianNetwork::BayesianNetwork()
-{
-}
-
-
 BayesianNetwork::~BayesianNetwork()
 {
 }

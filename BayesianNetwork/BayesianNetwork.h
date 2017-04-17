@@ -7,6 +7,9 @@ using namespace std;
 #pragma once
 class BayesianNetwork
 {
+	class Node;
+	vector<Node> nodes;
+
 public:
 	BayesianNetwork(DataSet dataSet);
 	void learnParams(DataSet dataSet);
@@ -18,5 +21,14 @@ public:
 	vector<long double> evaluate(vector<int> entry);
 
 	~BayesianNetwork();
+
+	class Node {
+		vector<int> parentNodes;
+		vector<int> params;
+		// Row are parents probability (2^parents columns num), 
+		// column is predicted probability of param by index on params (equeal to params.size())
+		vector<vector<long double>> probabilities;
+	};
+	friend class Node;
 };
 
