@@ -18,14 +18,12 @@ private:
 public:
 
 	DataSet(vector<vector<int>> arr);
-	vector<string> paramsForColumn(int columnNum);
+	vector<int> paramsForColumn(int columnNum);
+	vector<int> countParams(int columnNum);
+	vector<int> countParams(int columnNum, vector<pair<int, int>> restrictions);
 
-	vector<vector<int>> valuesInRow(int row) {
-		return data;
-	}
-
-	vector<vector<int>> getParams() {
-		return params;
+	vector<int> getDataInColumn(int col) {
+		return data.at(col);
 	}
 
 	int rowNum() {

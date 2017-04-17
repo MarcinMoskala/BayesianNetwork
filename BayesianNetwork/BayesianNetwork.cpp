@@ -32,14 +32,21 @@ BayesianNetwork::~BayesianNetwork()
 
 BayesianNetwork::BayesianNetwork(DataSet dataSet)
 {
-	nodes = map<vector<int>, Node>(dataSet.getParams(), [](vector<int> p) -> Node {
-		return Node(p);
-	});
+	nodes = vector<Node>{};
+	for (int i = 0; i < dataSet.columnsNum(); i++) {
+		auto params = dataSet.paramsForColumn(i);
+		Node node = Node(params);
+		nodes.push_back(node);
+	}
 	learnParams(dataSet);
 }
 
 void BayesianNetwork::learnParams(DataSet dataSet)
 {
+	for_each_indexed(nodes, [dataSet](Node node, int index) -> void {
+//		vector<int> data = dataSet.getDataInColumn(index);
+//		return i + 1;
+	});
 }
 
 void BayesianNetwork::learnStructure(DataSet dataSet)

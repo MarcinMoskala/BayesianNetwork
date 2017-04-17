@@ -12,7 +12,8 @@ int getColumnsNum(vector<vector<int>> v) {
 	return v.at(0).size();
 }
 
-vector<int> valuesInColumn(vector<vector<int>> v, int columnIndex) {
+vector<int> valuesInColumn(vector<vector<int>> v, int columnIndex) 
+{
 	return map<vector<int>, int>(v, [columnIndex](vector<int> line) -> int {
 		return line.at(columnIndex);
 	});
@@ -52,9 +53,33 @@ DataSet::DataSet(vector<vector<int>> v)
 	data = getValues(v, params);
 }
 
-vector<string> DataSet::paramsForColumn(int columnNum)
+vector<int> DataSet::paramsForColumn(int columnNum)
 {
-	return map<int, string>(params.at(columnNum), [](int it) -> string { return to_string(it); });
+	return params.at(columnNum);
+}
+
+vector<int> DataSet::countParams(int columnNum)
+{
+	return countParams(columnNum, vector<pair<int, int>> { });
+}
+
+vector<int> intZeroes(int size) {
+	vector<int> v = vector<int>(size);
+	std::fill(v.begin(), v.end(), 0);
+	return v;
+}
+
+vector<int> DataSet::countParams(int columnNum, vector<pair<int, int>> restrictions)
+{
+	vector<int> column = data.at(columnNum);
+	int rows = column.size();
+	vector<int> counter = intZeroes(params.size());
+	for (int row = 0; row < rows; row++) {
+		 int paramIndex = column.at(row);
+		 if(paramIndex >= 0 && paramIndex < params.size())
+			counter.at(paramIndex)++;
+	}
+	return counter;
 }
 
 #endif

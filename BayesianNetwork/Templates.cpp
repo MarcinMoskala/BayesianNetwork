@@ -71,6 +71,19 @@ std::vector<_Ty2> map(std::vector<_Ty> iterable, _Fn1 _Func)
 }
 
 namespace std {
+	template<class _It, class _Func> inline
+		void for_each_indexed(_It iterable , _Func _Func)
+	{	
+		int i = 0;
+		auto it = iterable.begin();
+		auto end = iterable.end();
+		for (; it != end; ++it)
+		{
+			_Func(*it, i);
+			i++;
+		}
+	}
+
 	template<class _InIt, class _Func> inline
 		void for_each_indexed(_InIt _First, _InIt _Last, _Func _Func)
 	{	// perform function for each element
