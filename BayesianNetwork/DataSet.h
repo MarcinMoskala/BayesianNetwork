@@ -8,7 +8,7 @@ class DataSet
 {
 private:
 	// Possible value of data on this column
-	vector<set<string>> params;
+	vector<vector<int>> params;
 
 	// Number of param from 0 in column
 	vector<vector<int>> data;
@@ -17,7 +17,7 @@ private:
 public:
 
 	DataSet(vector<vector<int>> arr);
-	set<string> paramsForColumn(int columnNum);
+	vector<string> paramsForColumn(int columnNum);
 
 	vector<vector<int>> valuesInRow(int row) {
 		return data;
