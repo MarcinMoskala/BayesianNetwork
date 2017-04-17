@@ -66,19 +66,37 @@ bool BayesianNetwork::isConnection(int fromIndex, int toIndex)
 	return false;
 }
 
-vector<long double> BayesianNetwork::qualityFunction(vector<int> entry)
+long double BayesianNetwork::probabilityOf(int node, int valueParam)
 {
-	return vector<long double>();
+	return nodes.at(node).probabilityOf(valueParam);
 }
 
 vector<long double> BayesianNetwork::evaluate(vector<int> entry)
 {
-	return vector<long double>();
+	return mapIndexed<int, long double>(entry, [this](int e, int index) -> long double {
+		return this->probabilityOf(index, e);
+	});
+}
+
+long double BayesianNetwork::qualityFunction(DataSet dataSet)
+{
+	return 0;
 }
 
 // TODO Copy
 vector<BayesianNetwork::Node> BayesianNetwork::getNodes() {
 	return nodes;
+}
+
+long double BayesianNetwork::Node::probabilityOf(int valueParam)
+{
+	int index = indexOf(params, valueParam);
+	if (index < 0 || index >= probabilities.size())
+		return 0.0L;
+	auto probs = probabilities.at(index);
+	return sumBy(probs, 0.0L, [this](long double p) -> int {
+		return p;
+	});
 }
 
 BayesianNetwork::Node::Node(vector<int> params)
@@ -87,7 +105,7 @@ BayesianNetwork::Node::Node(vector<int> params)
 }
 
 BayesianNetwork::Node::Node(vector<int> params, vector<int> parentNodes)
-	:BayesianNetwork::Node::Node(params, parentNodes, equallyDistributedRows(params.size(), pow(2, parentNodes.size())))
+	:BayesianNetwork::Node::Node(params, parentNodes, equallyDistributedRows(pow(2, parentNodes.size()), params.size()))
 {
 }
 BayesianNetwork::Node::Node(vector<int> params, vector<int> parentNodes, vector<vector<long double>> probabilities)

@@ -59,12 +59,44 @@ It uniquify(It begin, It const end)
 	return begin;
 }
 
+template<class _STy, class _Ty, class _Fn1>
+_STy sumBy(std::vector<_Ty> iterable, _STy initial, _Fn1 _Func)
+{
+	_STy sum = initial;
+	for (auto const& value : iterable) {
+		sum += _Func(value);
+	}
+	return sum;
+}
+
+template<class _Ty>
+int sum(std::vector<_Ty> iterable)
+{
+	int sum = 0;
+	for (auto const& value : iterable) {
+		sum += value;
+	}
+	return sum;
+}
+
 template<class _Ty, class _Ty2, class _Fn1>
 std::vector<_Ty2> map(std::vector<_Ty> iterable, _Fn1 _Func)
 {
 	std::vector<_Ty2> v = std::vector<_Ty2>();
 	for (auto const& value : iterable) {
 		_Ty2 newVal = _Func(value);
+		v.push_back(newVal);
+	}
+	return v;
+}
+
+template<class _Ty, class _Ty2, class _Fn1>
+std::vector<_Ty2> mapIndexed(std::vector<_Ty> iterable, _Fn1 _Func)
+{
+	std::vector<_Ty2> v = std::vector<_Ty2>();
+	int index = 0;
+	for (auto const& value : iterable) {
+		_Ty2 newVal = _Func(value, index++);
 		v.push_back(newVal);
 	}
 	return v;

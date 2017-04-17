@@ -49,8 +49,7 @@ namespace Microsoft {
 			static wstring ToString<vector<vector<int>>>(const vector<vector<int>> & coord) {
 				wstring str = L"{ ";
 				for_each(coord.begin(), coord.end(), [&str](vector<int> i) -> void { str += ToString(i) + L", "; });
-				str += L"}";
-				return str;
+				return str + L"}";
 			}
 
 			template<>
