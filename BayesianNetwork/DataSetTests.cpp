@@ -2,6 +2,7 @@
 #include <CppUnitTest.h>  
 #include "DataSet.h"
 #include "Templates.cpp"
+#include "TestHelpers.cpp"
 #include <vector>
 #include <cassert>
 
@@ -9,45 +10,11 @@ using namespace std;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
 
-namespace Microsoft {
-	namespace VisualStudio {
-		namespace CppUnitTestFramework {
-
-			static wstring stringToWstring(string str) {
-				std::wstring str2(str.length(), L' ');
-				std::copy(str.begin(), str.end(), str2.begin());
-				return str2;
-			}
-
-			template<>
-			static wstring ToString<vector<string>>(const vector<string> & coord) {
-				string str = "{ ";
-				for_each(coord.begin(), coord.end(), [&str](string s) -> void { str += s + ", "; });
-				str += "}";
-				return stringToWstring(str);
-			}
-			template<>
-			static wstring ToString<vector<int>>(const vector<int> & coord) {
-				string str = "{ ";
-				for_each(coord.begin(), coord.end(), [&str](int i) -> void { str += to_string(i) + ", "; });
-				str += "}";
-				return stringToWstring(str);
-			}
-			template<>
-			static wstring ToString<vector<vector<int>>>(const vector<vector<int>> & coord) {
-				wstring str = L"{ ";
-				for_each(coord.begin(), coord.end(), [&str](vector<int> i) -> void { str += ToString(i) + L", "; });
-				str += L"}";
-				return str;
-			}
-		}
-	}
-}
-
-namespace TimeSeriesToolkit
+#pragma once
+namespace BayesianNetwork
 {
 
-	TEST_CLASS(TimeSeries_tests)
+	TEST_CLASS(DataSet_tests)
 	{
 	public:
 		TEST_METHOD(Correct_labels_creation_test)
@@ -136,36 +103,6 @@ namespace TimeSeriesToolkit
 				vector<vector<int>> { vector<int> { 0, 1, 0 }, vector<int> { 0, 0, 1 } },
 				data.valuesInRow(0)
 			);
-		}
-
-		TEST_METHOD(Mapping_test)
-		{
-			Assert::AreEqual(vector<int> { 2, 3 }, map<int, int>(vector<int>{1, 2}, [](int i) -> int { return i + 1; }));
-			Assert::AreEqual(vector<int> { 2, 4, 6 }, map<int, int>(vector<int>{1, 2, 3}, [](int i) -> int { return i * 2; }));
-			Assert::AreEqual(vector<int> { 1, 4, 9 }, map<int, int>(vector<int>{1, 2, 3}, [](int i) -> int { return i * i; }));
-		}
-
-		TEST_METHOD(Vector_mapping_test)
-		{
-			Assert::AreEqual(vector<vector<int>> { {3, 4}, { 5, 6 } }, map<vector<int>, vector<int>>(vector<vector<int>>{ {2, 3}, { 4, 5 } }, [](vector<int> v) -> vector<int> {
-				return map<int, int>(v, [](int i) -> int { 
-					return i + 1;
-				});
-			}));
-		}
-
-		TEST_METHOD(Uniquify_test)
-		{
-			std::vector<int> v = { 1, 1, 2, 2 };
-			v.erase(uniquify(v.begin(), v.end()), v.end());
-			Assert::AreEqual(vector<int> { 1, 2 }, v);
-		}
-
-		TEST_METHOD(Custom_uniquify_test)
-		{
-			std::vector<int> v = { 1, 1, 2, 2 };
-			v = uniquify(v);
-			Assert::AreEqual(vector<int> { 1, 2 }, v);
 		}
 	};
 }

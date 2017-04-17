@@ -6,6 +6,8 @@
 #ifndef CUSTOM_TEMPLATE_BN
 #define CUSTOM_TEMPLATE_BN
 
+#pragma once
+
 int getColumnsNum(vector<vector<int>> v) {
 	return v.at(0).size();
 }

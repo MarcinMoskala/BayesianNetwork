@@ -5,6 +5,11 @@
 #include <numeric>
 #include <iterator>
 
+#ifndef CUSTOM_TEMPLATES
+#define CUSTOM_TEMPLATES
+
+#pragma once
+
 template<class Ty>
 int indexOf(std::vector<Ty> v, Ty i) {
 	auto it = std::find(v.begin(), v.end(), i);
@@ -77,3 +82,5 @@ namespace std {
 		}
 	}
 }
+
+#endif
