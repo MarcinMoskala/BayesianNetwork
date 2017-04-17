@@ -15,10 +15,11 @@ private:
 public:
 	BayesianNetwork(DataSet dataSet);
 	BayesianNetwork withParamsLearned(DataSet dataSet);
-	void learnStructure(DataSet dataSet);
-	void addConnection(int fromIndex, int toIndex);
-	void removeConnection(int fromIndex, int toIndex);
-	bool isConnection(int fromIndex, int toIndex);
+	BayesianNetwork withStructureLearned(DataSet dataSet);
+	BayesianNetwork withConnection(int fromIndex, int toIndex);
+	BayesianNetwork withoutConnection(int fromIndex, int toIndex);
+	bool haveConnection(int fromIndex, int toIndex);
+	long double probabilityOf(int node, int value, map<int, int> knowlagde);
 	long double probabilityOf(int node, int value);
 	vector<long double> evaluate(vector<int> entry);
 	long double qualityFunction(DataSet dataSet);
@@ -42,7 +43,7 @@ public:
 		Node(vector<int> params);
 		Node(vector<int> params, vector<int> parentNodes);
 		Node(const Node &);
-		long double probabilityOf(int value);
+		long double probabilityOf(int value, map<int, int> knowladge);
 		Node withParamsLearned(DataSet dataSet, int index);
 		~Node();
 

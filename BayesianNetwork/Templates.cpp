@@ -11,8 +11,14 @@
 #pragma once
 
 template<class Ty>
-int indexOf(std::vector<Ty> v, Ty i) {
-	auto it = std::find(v.begin(), v.end(), i);
+int contains(std::vector<Ty> v, Ty elem) {
+	int i = indexOf(v, elem);
+	return i >= 0 && i < v.size();
+}
+
+template<class Ty>
+int indexOf(std::vector<Ty> v, Ty elem) {
+	auto it = std::find(v.begin(), v.end(), elem);
 	return it - v.begin();
 }
 

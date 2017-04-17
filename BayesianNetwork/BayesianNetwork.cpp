@@ -30,13 +30,6 @@ BayesianNetwork::~BayesianNetwork()
 {
 }
 
-void BayesianNetwork::learnParams(DataSet dataSet)
-{
-	nodes = mapIndexed<Node, Node>(nodes, [dataSet](Node node, int index) -> Node {
-		return node.withParamsLearned(dataSet, index);
-	});
-}
-
 BayesianNetwork::BayesianNetwork(DataSet dataSet)
 {
 	nodes = vector<Node>{};
@@ -45,7 +38,6 @@ BayesianNetwork::BayesianNetwork(DataSet dataSet)
 		Node node = Node(params);
 		nodes.push_back(node);
 	}
-	learnParams(dataSet);
 }
 
 
@@ -53,30 +45,45 @@ BayesianNetwork::BayesianNetwork(DataSet dataSet)
 BayesianNetwork BayesianNetwork::withParamsLearned(DataSet dataSet)
 {
 	auto bn = BayesianNetwork(*this);
-	bn.learnParams(dataSet);
+	bn.nodes = mapIndexed<Node, Node>(nodes, [dataSet](Node node, int index) -> Node {
+		return node.withParamsLearned(dataSet, index);
+	});
 	return bn;
 }
 
-void BayesianNetwork::learnStructure(DataSet dataSet)
+BayesianNetwork BayesianNetwork::withStructureLearned(DataSet dataSet)
 {
+	return BayesianNetwork(*this);
 }
 
-void BayesianNetwork::addConnection(int fromIndex, int toIndex)
+BayesianNetwork BayesianNetwork::withConnection(int fromIndex, int toIndex)
 {
+	BayesianNetwork bn = BayesianNetwork(*this);
+	bn.nodes.at(toIndex).parentNodes.push_back(fromIndex);
+	return bn;
 }
 
-void BayesianNetwork::removeConnection(int fromIndex, int toIndex)
+BayesianNetwork BayesianNetwork::withoutConnection(int fromIndex, int toIndex)
 {
+	BayesianNetwork bn = BayesianNetwork(*this);
+	auto n = bn.nodes.at(toIndex).parentNodes;
+	n.erase(find(n.begin(), n.end(), fromIndex));
+	return bn;
 }
 
-bool BayesianNetwork::isConnection(int fromIndex, int toIndex)
+bool BayesianNetwork::haveConnection(int fromIndex, int toIndex)
 {
-	return false;
+	return contains(nodes.at(toIndex).parentNodes, fromIndex);
+}
+
+long double BayesianNetwork::probabilityOf(int node, int valueParam, map<int, int> knowladge)
+{
+	return nodes.at(node).probabilityOf(valueParam, knowladge);
 }
 
 long double BayesianNetwork::probabilityOf(int node, int valueParam)
 {
-	return nodes.at(node).probabilityOf(valueParam);
+	return nodes.at(node).probabilityOf(valueParam, map<int, int> {});
 }
 
 vector<long double> BayesianNetwork::evaluate(vector<int> entry)
@@ -96,7 +103,7 @@ vector<BayesianNetwork::Node> BayesianNetwork::getNodes() {
 	return nodes;
 }
 
-long double BayesianNetwork::Node::probabilityOf(int valueParam)
+long double BayesianNetwork::Node::probabilityOf(int valueParam, map<int, int> knowladge)
 {
 	int index = indexOf(params, valueParam);
 	if (index < 0 || index >= probabilities.size())
