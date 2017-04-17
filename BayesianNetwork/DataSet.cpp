@@ -24,6 +24,7 @@ vector<set<string>> extractParams(vector<vector<int>> v) {
 DataSet::DataSet(vector<vector<int>> v)
 {
 	params = extractParams(v);
+	data = vector<vector<int>>{ {0}, {0}, {0} };
 }
 
 set<string> DataSet::paramsForColumn(int columnNum)

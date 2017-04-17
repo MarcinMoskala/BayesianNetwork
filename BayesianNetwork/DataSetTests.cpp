@@ -33,6 +33,20 @@ namespace Microsoft {
 				str += "}";
 				return stringToWstring(str);
 			}
+			template<>
+			static wstring ToString<vector<int>>(const vector<int> & coord) {
+				string str = "{ ";
+				for_each(coord.begin(), coord.end(), [&str](int i) -> void { str += to_string(i) + ", "; });
+				str += "}";
+				return stringToWstring(str);
+			}
+			template<>
+			static wstring ToString<vector<vector<int>>>(const vector<vector<int>> & coord) {
+				wstring str = L"{ ";
+				for_each(coord.begin(), coord.end(), [&str](vector<int> i) -> void { str += ToString(i) + L", "; });
+				str += L"}";
+				return str;
+			}
 		}
 	}
 }
@@ -76,6 +90,17 @@ namespace TimeSeriesToolkit
 			Assert::AreEqual(set<string> { "1" }, data.paramsForColumn(0));
 			Assert::AreEqual(set<string> { "10" }, data.paramsForColumn(1));
 			Assert::AreEqual(set<string> { "100" }, data.paramsForColumn(2));
+		}
+
+		TEST_METHOD(Data_for_single_line_are_filled_with_zeroes)
+		{
+			DataSet data = DataSet(vector<vector<int>>{
+				vector<int>{ 1, 10, 100 }
+			});
+			Assert::AreEqual(
+				vector<vector<int>> { vector<int> { 0 }, vector<int> { 0 }, vector<int> { 0 } }, 
+				data.valuesInRow(0)
+			);
 		}
 	};
 }
