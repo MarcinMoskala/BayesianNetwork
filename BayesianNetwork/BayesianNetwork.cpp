@@ -68,6 +68,7 @@ BayesianNetwork BayesianNetwork::withoutConnection(int fromIndex, int toIndex)
 	BayesianNetwork bn = BayesianNetwork(*this);
 	auto n = bn.nodes.at(toIndex).parentNodes;
 	n.erase(find(n.begin(), n.end(), fromIndex));
+	bn.nodes.at(toIndex).parentNodes = n;
 	return bn;
 }
 

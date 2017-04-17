@@ -68,7 +68,7 @@ namespace BN
 			Assert::AreEqual(vector<long double>{ 0.25 }, bn.evaluate(vector<int>{ 2 }));
 		}
 
-		TEST_METHOD(Simple_connections_can_excist)
+		TEST_METHOD(Simple_connections_can_excist_and_be_deleted)
 		{
 			BayesianNetwork bn = BayesianNetwork(DataSet(vector<vector<int>>{
 				vector<int>{ 1, 1 },
@@ -78,6 +78,8 @@ namespace BN
 			}));
 			bn = bn.withConnection(1, 0);
 			Assert::IsTrue(bn.haveConnection(1, 0));
+			bn = bn.withoutConnection(1, 0);
+			Assert::IsFalse(bn.haveConnection(1, 0));
 		}
 
 		TEST_METHOD(Simple_probability_check_with_restrictions)
