@@ -47,5 +47,27 @@ namespace BayesianNetwork
 			v = uniquify(v);
 			Assert::AreEqual(vector<int> { 1, 2 }, v);
 		}
+
+		TEST_METHOD(Any_tests)
+		{
+			Assert::IsTrue(any(vector<int> { 1, 2, 3}, [](int i) -> bool {
+				return i == 3;
+			}));
+			Assert::IsFalse(any(vector<int> { 1, 2, 3}, [](int i) -> bool {
+				return i == 4;
+			}));
+			Assert::IsTrue(any(vector<bool> { true, false, false }, [](bool b) -> bool {
+				return b;
+			}));
+			Assert::IsTrue(any(vector<bool> { true, true }, [](bool b) -> bool {
+				return b;
+			}));
+			Assert::IsTrue(any(vector<bool> { true }, [](bool b) -> bool {
+				return b;
+			}));
+			Assert::IsFalse(any(vector<bool> {}, [](bool b) -> bool {
+				return b;
+			}));
+		}
 	};
 }

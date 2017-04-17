@@ -20,7 +20,7 @@ namespace BayesianNetwork
 		TEST_METHOD(Correct_labels_creation_test)
 		{
 			DataSet data = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 2, 3 },
+					vector<int>{ 1, 2, 3 },
 					vector<int>{ 4, 5, 6 },
 					vector<int>{ 7, 8, 9 }
 			});
@@ -88,7 +88,7 @@ namespace BayesianNetwork
 		TEST_METHOD(Data_for_single_two_line_are_filled_correctly_with_zeroes_and_ones)
 		{
 			DataSet data = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 2 },
+					vector<int>{ 1, 2 },
 					vector<int>{ 2, 2 },
 					vector<int>{ 1, 1 }
 			});
@@ -102,7 +102,7 @@ namespace BayesianNetwork
 		TEST_METHOD(Element_counting_with_no_restrictions)
 		{
 			DataSet data = DataSet(vector<vector<int>>{
-					vector<int>{ 1, 2 },
+				vector<int>{ 1, 2 },
 					vector<int>{ 2, 2 },
 					vector<int>{ 1, 1 },
 					vector<int>{ 1, 1 }
@@ -111,6 +111,17 @@ namespace BayesianNetwork
 			Assert::AreEqual(vector<int> { 2, 2 }, data.countParams(1));
 		}
 
-
+		TEST_METHOD(Simple_element_counting_with_restrictions)
+		{
+			DataSet data = DataSet(vector<vector<int>>{
+				vector<int>{ 1, 2, 1 },
+				vector<int>{ 2, 2, 0 },
+				vector<int>{ 1, 1, 0 },
+				vector<int>{ 1, 1, 0 }
+			});
+			Assert::AreEqual(vector<int> { 1, 0 }, data.countParams(0, vector <pair<int, int>> { make_pair(2, 1) }));
+			Assert::AreEqual(vector<int> { 2, 1 }, data.countParams(0, vector <pair<int, int>> { make_pair(2, 0) }));
+			Assert::AreEqual(vector<int> { 1, 2 }, data.countParams(1, vector <pair<int, int>> { make_pair(2, 0) } ));
+		}
 	};
 }

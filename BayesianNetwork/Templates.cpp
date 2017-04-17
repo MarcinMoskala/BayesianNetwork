@@ -70,6 +70,15 @@ std::vector<_Ty2> map(std::vector<_Ty> iterable, _Fn1 _Func)
 	return v;
 }
 
+template<class _Ty, class _Fn1>
+bool any(std::vector<_Ty> iterable, _Fn1 _Func)
+{
+	for (auto const& value : iterable) {
+		if (_Func(value)) return true;
+	}
+	return false;
+}
+
 namespace std {
 	template<class _It, class _Func> inline
 		void for_each_indexed(_It iterable , _Func _Func)

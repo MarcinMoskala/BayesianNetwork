@@ -17,13 +17,13 @@ namespace Microsoft {
 	namespace VisualStudio {
 		namespace CppUnitTestFramework {
 
-			wstring stringToWstring(string str) {
+			static wstring stringToWstring(string str) {
 				std::wstring str2(str.length(), L' ');
 				std::copy(str.begin(), str.end(), str2.begin());
 				return str2;
 			}
 
-			wstring longDoubleToWString(long double ld) {
+			static wstring longDoubleToWString(long double ld) {
 				std::stringstream ss;
 				ss << ld;
 				return stringToWstring(ss.str());

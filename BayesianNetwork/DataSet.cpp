@@ -73,11 +73,19 @@ vector<int> DataSet::countParams(int columnNum, vector<pair<int, int>> restricti
 {
 	vector<int> column = data.at(columnNum);
 	int rows = column.size();
-	vector<int> counter = intZeroes(params.size());
+	vector<int> counter = intZeroes(params.at(columnNum).size());
+	auto par = params;
 	for (int row = 0; row < rows; row++) {
-		 int paramIndex = column.at(row);
-		 if(paramIndex >= 0 && paramIndex < params.size())
-			counter.at(paramIndex)++;
+		if (any(restrictions, [this, row, par](pair<int, int> r) -> bool {
+			int colNum = r.first;
+			auto dataInColumn = this->getDataInColumn(colNum);
+			auto v = par.at(colNum).at(dataInColumn.at(row));
+			return v != r.second;
+		})) continue;
+
+		 int index = column.at(row);
+		 if(index >= 0 && index < params.size())
+			counter.at(index)++;
 	}
 	return counter;
 }
