@@ -5,6 +5,12 @@
 #include <numeric>
 #include <iterator>
 
+template<class Ty>
+int indexOf(std::vector<Ty> v, Ty i) {
+	auto it = std::find(v.begin(), v.end(), i);
+	return it - v.begin();
+}
+
 struct target_less
 {
 	template<class It>
@@ -17,12 +23,14 @@ struct target_equal
 	bool operator()(It const &a, It const &b) const { return *a == *b; }
 };
 
-template<class Ty> std::vector<Ty> uniquify(std::vector<Ty> v) {
+template<class Ty> 
+std::vector<Ty> uniquify(std::vector<Ty> v) {
 	v.erase(uniquify(v.begin(), v.end()), v.end());
 	return v;
 }
 
-template<class It> It uniquify(It begin, It const end)
+template<class It> 
+It uniquify(It begin, It const end)
 {
 	std::vector<It> v;
 	v.reserve(static_cast<size_t>(std::distance(begin, end)));
