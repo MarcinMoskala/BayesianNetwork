@@ -23,11 +23,11 @@ public:
 		return data;
 	}
 
-	int rows() {
+	int rowNum() {
 		return data.size();
 	}
 
-	int columns() {
+	int columnsNum() {
 		return params.size();
 	}
 

@@ -97,13 +97,27 @@ namespace TimeSeriesToolkit
 			Assert::AreEqual(vector<string> { "100" }, data.paramsForColumn(2));
 		}
 
-		TEST_METHOD(Data_for_single_line_is_filled_with_zeroes)
+		TEST_METHOD(Data_with_next_values_are_returning_next_values)
+		{
+			DataSet data = DataSet(vector<vector<int>>{
+				vector<int>{ 0 },
+				vector<int>{ 1 },
+				vector<int>{ 2 },
+				vector<int>{ 3 }
+			});
+			Assert::AreEqual(
+				vector<vector<int>> { vector<int> { 0, 1, 2, 3} },
+				data.valuesInRow(0)
+			);
+		}
+
+		TEST_METHOD(Data_for_single_line_are_filled_with_zeroes)
 		{
 			DataSet data = DataSet(vector<vector<int>>{
 				vector<int>{ 1, 10, 100 }
 			});
 			Assert::AreEqual(
-				vector<vector<int>> { vector<int> { 0, 0, 0 } },
+				vector<vector<int>> { vector<int> { 0 }, vector<int> { 0 }, vector<int> { 0 } },
 				data.valuesInRow(0)
 			);
 		}

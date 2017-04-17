@@ -11,13 +11,13 @@ int getColumnsNum(vector<vector<int>> v) {
 }
 
 vector<vector<int>> getValues(vector<vector<int>> v, vector<vector<int>> params) {
-	vector<vector<int>> values = map<vector<int>, vector<int>>(v, [params](vector<int> line) -> vector<int> { 
-		return map<int, int>(line, [params](int line) -> int {
-			return 0;
+	vector<vector<int>> values = vector<vector<int>>();
+	for (int columnIndex = 0; columnIndex != params.size(); columnIndex++) {
+		vector<int> valuesAtColumn = map<vector<int>, int>(v, [columnIndex](vector<int> line) -> int {
+			return line.at(columnIndex);
 		});
+		values.push_back(valuesAtColumn);
 	}
-	);
-	int columnsNum = getColumnsNum(v);
 	return values;
 }
 
