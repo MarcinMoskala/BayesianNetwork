@@ -80,7 +80,7 @@ int sum(std::vector<_Ty> iterable)
 }
 
 template<class _Ty, class _Ty2, class _Fn1>
-std::vector<_Ty2> map(std::vector<_Ty> iterable, _Fn1 _Func)
+std::vector<_Ty2> mapTo(std::vector<_Ty> iterable, _Fn1 _Func)
 {
 	std::vector<_Ty2> v = std::vector<_Ty2>();
 	for (auto const& value : iterable) {
@@ -102,8 +102,8 @@ std::vector<_Ty2> mapIndexed(std::vector<_Ty> iterable, _Fn1 _Func)
 	return v;
 }
 
-template<class _Ty, class _Fn1>
-bool any(std::vector<_Ty> iterable, _Fn1 _Func)
+template<class It, class _Fn1>
+bool any(It iterable, _Fn1 _Func)
 {
 	for (auto const& value : iterable) {
 		if (_Func(value)) return true;

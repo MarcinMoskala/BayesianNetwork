@@ -1,5 +1,6 @@
 #include <vector>
 #include <set>
+#include <map>
 
 using namespace std;
 
@@ -20,7 +21,7 @@ public:
 	DataSet(vector<vector<int>> arr);
 	vector<int> paramsForColumn(int columnNum);
 	vector<int> countParams(int columnNum);
-	vector<int> countParams(int columnNum, vector<pair<int, int>> restrictions);
+	vector<int> countParams(int columnNum, map<int, int> knowladge);
 
 	vector<int> getDataInColumn(int col) {
 		return data.at(col);

@@ -119,9 +119,9 @@ namespace BayesianNetwork
 				vector<int>{ 1, 1, 0 },
 				vector<int>{ 1, 1, 0 }
 			});
-			Assert::AreEqual(vector<int> { 1, 0 }, data.countParams(0, vector <pair<int, int>> { make_pair(2, 1) }));
-			Assert::AreEqual(vector<int> { 2, 1 }, data.countParams(0, vector <pair<int, int>> { make_pair(2, 0) }));
-			Assert::AreEqual(vector<int> { 1, 2 }, data.countParams(1, vector <pair<int, int>> { make_pair(2, 0) } ));
+			Assert::AreEqual(vector<int> { 1, 0 }, data.countParams(0, map<int, int> { make_pair(2, 1) }));
+			Assert::AreEqual(vector<int> { 2, 1 }, data.countParams(0, map<int, int> { make_pair(2, 0) }));
+			Assert::AreEqual(vector<int> { 1, 2 }, data.countParams(1, map<int, int> { make_pair(2, 0) } ));
 		}
 	};
 }

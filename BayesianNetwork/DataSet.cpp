@@ -14,7 +14,7 @@ int getColumnsNum(vector<vector<int>> v) {
 
 vector<int> valuesInColumn(vector<vector<int>> v, int columnIndex) 
 {
-	return map<vector<int>, int>(v, [columnIndex](vector<int> line) -> int {
+	return mapTo<vector<int>, int>(v, [columnIndex](vector<int> line) -> int {
 		return line.at(columnIndex);
 	});
 }
@@ -24,7 +24,7 @@ vector<vector<int>> getValues(vector<vector<int>> v, vector<vector<int>> params)
 	for (int columnIndex = 0; columnIndex != params.size(); columnIndex++) {
 		vector<int> valuesAtColumn = valuesInColumn(v, columnIndex);
 		vector<int> paramsAtColumn = params.at(columnIndex);
-		vector<int> valuesInColumnUnlabeled = map<int, int>(valuesAtColumn, [paramsAtColumn](int i) -> int {
+		vector<int> valuesInColumnUnlabeled = mapTo<int, int>(valuesAtColumn, [paramsAtColumn](int i) -> int {
 			return indexOf<int>(paramsAtColumn, i);
 		});
 		values.push_back(valuesInColumnUnlabeled);
@@ -60,7 +60,7 @@ vector<int> DataSet::paramsForColumn(int columnNum)
 
 vector<int> DataSet::countParams(int columnNum)
 {
-	return countParams(columnNum, vector<pair<int, int>> { });
+	return countParams(columnNum, map<int, int>());
 }
 
 vector<int> intZeroes(int size) {
@@ -69,14 +69,14 @@ vector<int> intZeroes(int size) {
 	return v;
 }
 
-vector<int> DataSet::countParams(int columnNum, vector<pair<int, int>> restrictions)
+vector<int> DataSet::countParams(int columnNum, map<int, int> knowladge)
 {
 	vector<int> column = data.at(columnNum);
 	int rows = column.size();
 	vector<int> counter = intZeroes(params.at(columnNum).size());
 	auto par = params;
 	for (int row = 0; row < rows; row++) {
-		if (any(restrictions, [this, row, par](pair<int, int> r) -> bool {
+		if (any(knowladge, [this, row, par](pair<int, int> r) -> bool {
 			int colNum = r.first;
 			auto dataInColumn = this->getDataInColumn(colNum);
 			auto v = par.at(colNum).at(dataInColumn.at(row));

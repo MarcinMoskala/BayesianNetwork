@@ -20,15 +20,15 @@ namespace BayesianNetwork
 		
 		TEST_METHOD(Mapping_test)
 		{
-			Assert::AreEqual(vector<int> { 2, 3 }, map<int, int>(vector<int>{1, 2}, [](int i) -> int { return i + 1; }));
-			Assert::AreEqual(vector<int> { 2, 4, 6 }, map<int, int>(vector<int>{1, 2, 3}, [](int i) -> int { return i * 2; }));
-			Assert::AreEqual(vector<int> { 1, 4, 9 }, map<int, int>(vector<int>{1, 2, 3}, [](int i) -> int { return i * i; }));
+			Assert::AreEqual(vector<int> { 2, 3 }, mapTo<int, int>(vector<int>{1, 2}, [](int i) -> int { return i + 1; }));
+			Assert::AreEqual(vector<int> { 2, 4, 6 }, mapTo<int, int>(vector<int>{1, 2, 3}, [](int i) -> int { return i * 2; }));
+			Assert::AreEqual(vector<int> { 1, 4, 9 }, mapTo<int, int>(vector<int>{1, 2, 3}, [](int i) -> int { return i * i; }));
 		}
 
 		TEST_METHOD(Vector_mapping_test)
 		{
-			Assert::AreEqual(vector<vector<int>> { {3, 4}, { 5, 6 } }, map<vector<int>, vector<int>>(vector<vector<int>>{ {2, 3}, { 4, 5 } }, [](vector<int> v) -> vector<int> {
-				return map<int, int>(v, [](int i) -> int {
+			Assert::AreEqual(vector<vector<int>> { {3, 4}, { 5, 6 } }, mapTo<vector<int>, vector<int>>(vector<vector<int>>{ {2, 3}, { 4, 5 } }, [](vector<int> v) -> vector<int> {
+				return mapTo<int, int>(v, [](int i) -> int {
 					return i + 1;
 				});
 			}));
