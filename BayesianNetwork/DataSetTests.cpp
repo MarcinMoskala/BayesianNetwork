@@ -115,13 +115,27 @@ namespace BayesianNetwork
 		{
 			DataSet data = DataSet(vector<vector<int>>{
 				vector<int>{ 1, 2, 1 },
-				vector<int>{ 2, 2, 0 },
-				vector<int>{ 1, 1, 0 },
-				vector<int>{ 1, 1, 0 }
+					vector<int>{ 2, 2, 0 },
+					vector<int>{ 1, 1, 0 },
+					vector<int>{ 1, 1, 0 }
 			});
 			Assert::AreEqual(vector<int> { 1, 0 }, data.countParams(0, map<int, int> { make_pair(2, 1) }));
 			Assert::AreEqual(vector<int> { 2, 1 }, data.countParams(0, map<int, int> { make_pair(2, 0) }));
-			Assert::AreEqual(vector<int> { 1, 2 }, data.countParams(1, map<int, int> { make_pair(2, 0) } ));
+			Assert::AreEqual(vector<int> { 1, 2 }, data.countParams(1, map<int, int> { make_pair(2, 0) }));
 		}
+
+		TEST_METHOD(Count_params_with_single_different)
+		{
+			DataSet data = DataSet(vector<vector<int>>{
+					vector<int>{ 1 },
+					vector<int>{ 1 },
+					vector<int>{ 1 },
+					vector<int>{ 2 }
+			});
+			Assert::AreEqual(vector<int> { 1, 2 }, data.paramsForColumn(0));
+			Assert::AreEqual(vector<int> { 3, 1 }, data.countParams(0));
+		}
+
+
 	};
 }

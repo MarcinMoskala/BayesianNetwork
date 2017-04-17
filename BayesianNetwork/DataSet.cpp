@@ -84,7 +84,7 @@ vector<int> DataSet::countParams(int columnNum, map<int, int> knowladge)
 		})) continue;
 
 		 int index = column.at(row);
-		 if(index >= 0 && index < params.size())
+		 if(index >= 0 && index <= params.size())
 			counter.at(index)++;
 	}
 	return counter;

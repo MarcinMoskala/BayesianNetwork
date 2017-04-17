@@ -2,11 +2,11 @@
 #include "BayesianNetwork.h"
 #include "Templates.cpp"
 
-vector<vector<long double>> matrixOf(int c, int r, long double value) {
+vector<vector<long double>> matrixOf(int colNum, int rowNum, long double value) {
 	vector<vector<long double>> m = {};
-	for (int i = 0; i < r; i++) {
+	for (int i = 0; i < rowNum; i++) {
 		vector<long double> v = {};
-		for (int j = 0; j < c; j++)
+		for (int j = 0; j < colNum; j++)
 			v.push_back(value);
 		m.push_back(v);
 	}
@@ -21,13 +21,20 @@ vector<vector<long double>> ones(int c, int r) {
 	return matrixOf(c, r, 1.0L);
 }
 
-vector<vector<long double>> equallyDistributedRows(int c, int r) {
-	long double p = 1.0L / r;
-	return matrixOf(c, r, p);
+vector<vector<long double>> equallyDistributedRows(int colNum, int rowNum) {
+	long double p = 1.0L / rowNum;
+	return matrixOf(colNum, rowNum, p);
 }
 
 BayesianNetwork::~BayesianNetwork()
 {
+}
+
+void BayesianNetwork::learnParams(DataSet dataSet)
+{
+	nodes = mapIndexed<Node, Node>(nodes, [dataSet](Node node, int index) -> Node {
+		return node.withParamsLearned(dataSet, index);
+	});
 }
 
 BayesianNetwork::BayesianNetwork(DataSet dataSet)
@@ -41,12 +48,13 @@ BayesianNetwork::BayesianNetwork(DataSet dataSet)
 	learnParams(dataSet);
 }
 
-void BayesianNetwork::learnParams(DataSet dataSet)
+
+
+BayesianNetwork BayesianNetwork::withParamsLearned(DataSet dataSet)
 {
-	for_each_indexed(nodes, [dataSet](Node node, int index) -> void {
-//		vector<int> data = dataSet.getDataInColumn(index);
-//		return i + 1;
-	});
+	auto bn = BayesianNetwork(*this);
+	bn.learnParams(dataSet);
+	return bn;
 }
 
 void BayesianNetwork::learnStructure(DataSet dataSet)
@@ -106,17 +114,29 @@ BayesianNetwork::Node::Node(vector<int> params)
 }
 
 BayesianNetwork::Node::Node(vector<int> params, vector<int> parentNodes)
-	:BayesianNetwork::Node::Node(params, parentNodes, equallyDistributedRows(pow(2, parentNodes.size()), params.size()))
 {
-}
-BayesianNetwork::Node::Node(vector<int> params, vector<int> parentNodes, vector<vector<long double>> probabilities)
-	: params(params), parentNodes(parentNodes), probabilities(probabilities) 
-{
+	this->params = params;
+	this->parentNodes = parentNodes;
+	this->colNum = pow(2, parentNodes.size()); 
+	this->rowNum = params.size();
+	this->probabilities = equallyDistributedRows(colNum, rowNum);
 }
 
 BayesianNetwork::Node::Node(const Node& n)
-	: params(n.params), parentNodes(n.parentNodes), probabilities(n.probabilities)
+	: params(n.params), parentNodes(n.parentNodes), colNum(n.colNum), rowNum(n.rowNum), probabilities(n.probabilities)
 {
+}
+
+BayesianNetwork::Node BayesianNetwork::Node::withParamsLearned(DataSet dataSet, int index)
+{
+	vector<int> allCounted = dataSet.countParams(index);
+	int sumOfAll = sum(allCounted);
+	for (int c = 0; c < colNum; c++) {
+		for (int r = 0; r < rowNum; r++) {
+			probabilities.at(r).at(c) = 1.0L * allCounted.at(r) / sumOfAll;
+		}
+	}
+	return *this;
 }
 
 BayesianNetwork::Node::~Node()

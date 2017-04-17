@@ -21,7 +21,7 @@ namespace BN
 		TEST_METHOD(BayesianNetwork_from_data_model_have_nodes_for_each_row)
 		{
 			BayesianNetwork bn = BayesianNetwork(DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1, 2 },
+					vector<int>{ 1, 1, 2 },
 					vector<int>{ 2, 1, 2 },
 					vector<int>{ 1, 1, 2 },
 					vector<int>{ 2, 1, 2 }
@@ -43,11 +43,23 @@ namespace BN
 		TEST_METHOD(Equaly_distributed_elements_are_equaly_probable)
 		{
 			BayesianNetwork bn = BayesianNetwork(DataSet(vector<vector<int>>{
-					vector<int>{ 1 },
-					vector<int>{ 2 }
+				vector<int>{ 1 },
+				vector<int>{ 2 }
 			}));
-			//Assert::AreEqual(vector<long double>{ 0.5 }, bn.evaluate(vector<int>{ 1 }));
+			Assert::AreEqual(vector<long double>{ 0.5 }, bn.evaluate(vector<int>{ 1 }));
 			Assert::AreEqual(vector<long double>{ 0.5 }, bn.evaluate(vector<int>{ 2 }));
+		}
+
+		TEST_METHOD(Simple_probability_check_with_no_restrictions)
+		{
+			BayesianNetwork bn = BayesianNetwork(DataSet(vector<vector<int>>{
+				vector<int>{ 1 },
+				vector<int>{ 1 },
+				vector<int>{ 1 },
+				vector<int>{ 2 }
+			}));
+			Assert::AreEqual(vector<long double>{ 0.75 }, bn.evaluate(vector<int>{ 1 }));
+			Assert::AreEqual(vector<long double>{ 0.25 }, bn.evaluate(vector<int>{ 2 }));
 		}
 	};
 }

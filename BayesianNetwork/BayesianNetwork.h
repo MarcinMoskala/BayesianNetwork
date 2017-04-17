@@ -11,9 +11,10 @@ public:
 	class Node;
 private:
 	vector<Node> nodes;
+	void learnParams(DataSet dataSet);
 public:
 	BayesianNetwork(DataSet dataSet);
-	void learnParams(DataSet dataSet);
+	BayesianNetwork withParamsLearned(DataSet dataSet);
 	void learnStructure(DataSet dataSet);
 	void addConnection(int fromIndex, int toIndex);
 	void removeConnection(int fromIndex, int toIndex);
@@ -30,17 +31,24 @@ public:
 	{
 		vector<int> parentNodes;
 		vector<int> params;
-		// Columns are parents probability (2^parents columns num), 
 		// Row is predicted probability of param by index on params (equal to params.size())
+		// Columns are parents probability (2^parents columns num)
 		vector<vector<long double>> probabilities;
+		int colNum;
+		int rowNum;
+		friend class BayesianNetwork;
 
 	public:
 		Node(vector<int> params);
 		Node(vector<int> params, vector<int> parentNodes);
-		Node(vector<int> params, vector<int> parentNodes, vector<vector<long double>> probabilities);
 		Node(const Node &);
 		long double probabilityOf(int value);
+		Node withParamsLearned(DataSet dataSet, int index);
 		~Node();
+
+		static bool parentOnInRowId(int rowCode, int row) {
+			return rowCode >> row % 2 == 1;
+		}
 	};
 };
 
