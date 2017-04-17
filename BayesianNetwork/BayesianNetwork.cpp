@@ -26,6 +26,13 @@ vector<vector<long double>> equallyDistributedRows(int colNum, int rowNum) {
 	return matrixOf(colNum, rowNum, p);
 }
 
+vector<long double> filledVector(int size, long double value) {
+	vector<long double> v = {};
+	for (int j = 0; j < size; j++)
+		v.push_back(value);
+	return v;
+}
+
 BayesianNetwork::~BayesianNetwork()
 {
 }
@@ -35,7 +42,7 @@ BayesianNetwork::BayesianNetwork(DataSet dataSet)
 	nodes = vector<Node>{};
 	for (int i = 0; i < dataSet.columnsNum(); i++) {
 		auto params = dataSet.paramsForColumn(i);
-		Node node = Node(params);
+		Node node = Node(this, params);
 		nodes.push_back(node);
 	}
 }
@@ -104,45 +111,114 @@ vector<BayesianNetwork::Node> BayesianNetwork::getNodes() {
 	return nodes;
 }
 
-long double BayesianNetwork::Node::probabilityOf(int valueParam, map<int, int> knowladge)
-{
-	int index = indexOf(params, valueParam);
-	if (index < 0 || index >= probabilities.size())
-		return 0.0L;
-	auto probs = probabilities.at(index);
-	long double sumOfP = sumBy(probs, 0.0L, [this](long double p) -> long double {
-		return p;
-	});
-	return sumOfP;
-}
-
-BayesianNetwork::Node::Node(vector<int> params)
-	:BayesianNetwork::Node::Node(params, vector<int> {})
+BayesianNetwork::Node::Node(BayesianNetwork* network, vector<int> params)
+	:BayesianNetwork::Node::Node(network, params, vector<int> {})
 {
 }
 
-BayesianNetwork::Node::Node(vector<int> params, vector<int> parentNodes)
+BayesianNetwork::Node::Node(BayesianNetwork* network, vector<int> params, vector<int> parentNodes)
 {
 	this->params = params;
 	this->parentNodes = parentNodes;
-	this->colNum = pow(2, parentNodes.size()); 
-	this->rowNum = params.size();
-	this->probabilities = equallyDistributedRows(colNum, rowNum);
+	this->paramDistribution = filledVector(params.size(), 1.0L / params.size());
 }
 
-BayesianNetwork::Node::Node(const Node& n)
-	: params(n.params), parentNodes(n.parentNodes), colNum(n.colNum), rowNum(n.rowNum), probabilities(n.probabilities)
+BayesianNetwork::Node::Node(const Node& n):
+	network(n.network),
+	params(n.params), 
+	parentNodes(n.parentNodes), 
+	paramDistribution(n.paramDistribution),
+	conditionalProbability(n.conditionalProbability)
 {
+}
+
+long double BayesianNetwork::Node::possibilityOf(vector<int> situation, map<int, int> knowladge) {
+	long double p = 0.0L;
+	for (int i = 0; i < situation.size(); i++) {
+		int parentIndex = parentNodes.at(i);
+		auto it = knowladge.find(parentIndex);
+		if (it == knowladge.end()) {
+			// No knowladge about this param
+			p *= paramDistribution.at(parentIndex);
+		}
+		else if (it->second == situation.at(i)) {
+			return 1.0L;
+		}
+		else {
+			return 0.0L;
+		}
+	}
+	return p;
+}
+
+long double BayesianNetwork::Node::probabilityOf(int valueParam, map<int, int> knowladge)
+{
+	if (knowladge.empty()) {
+		int index = indexOf(params, valueParam);
+		if (index < 0 || index >= paramDistribution.size())
+			return 0.0L;
+		return paramDistribution.at(index);
+	}
+	else 
+	{
+		long double finalP = 0.0L;
+		for (auto const &prob : conditionalProbability) {
+			auto situation = prob.first;
+			auto p = prob.second;
+			finalP += possibilityOf(situation, knowladge);
+		}
+		return finalP;
+	}
+}
+
+vector<vector<int>> getAllSituations(vector<vector<int>> parentParams) {
+	if (parentParams.size() == 0)
+		return {};
+	if (parentParams.size() == 1)
+		return mapTo<int, vector<int>>(parentParams.at(0), [](int i) -> vector<int> {	return vector<int> { i }; });
+	
+	vector<int> last = parentParams.at(parentParams.size() - 1);
+	auto init = vecInit(parentParams);
+	auto initSituations = getAllSituations(init);
+	return flatMap<vector<int>, vector<int>>(initSituations, [last](vector<int> v) -> vector<vector<int>> {
+		return mapTo<int, vector<int>>(last, [v](int i) -> vector<int> {
+			auto vec = vector<int>(v);
+			vec.push_back(i);
+			return vec;
+		});
+	});
+}
+
+map<int, int> situationAsKnowladge(vector<int> situation, vector<int> parentNodes) {
+	map<int, int> k = map<int, int>();
+	for (int i = 0; i < situation.size(); i++) {
+		k.insert(make_pair(parentNodes.at(i), situation.at(i)));
+	}
+	return k;
+}
+
+vector<long double> countDistribution(DataSet dataSet, int index, int paramSize, map<int, int> knowladge) {
+	vector<int> allCounted = dataSet.countParams(index, knowladge);
+	int sumOfAll = sum(allCounted);
+
+	vector<long double> paramDistribution = vector<long double>{};
+	for (int r = 0; r < paramSize; r++) {
+		paramDistribution.push_back(1.0L * allCounted.at(r) / sumOfAll);
+	}
+	return paramDistribution;
 }
 
 BayesianNetwork::Node BayesianNetwork::Node::withParamsLearned(DataSet dataSet, int index)
 {
-	vector<int> allCounted = dataSet.countParams(index);
-	int sumOfAll = sum(allCounted);
-	for (int c = 0; c < colNum; c++) {
-		for (int r = 0; r < rowNum; r++) {
-			probabilities.at(r).at(c) = 1.0L * allCounted.at(r) / sumOfAll;
-		}
+	paramDistribution = countDistribution(dataSet, index, params.size(), map<int, int> {});
+	
+	vector<Node> parents = mapTo<int, Node>(parentNodes, [this](int i) -> Node { return network->getNodes().at(i); });
+	auto parentParams = mapTo<Node, vector<int>>(parents, [](Node n) -> vector<int> { return n.params; });
+	auto situations = getAllSituations(parentParams);
+	for (auto s : situations) {
+		map<int, int> k = situationAsKnowladge(s, parentNodes);
+		auto p = countDistribution(dataSet, index, params.size(), k);
+		conditionalProbability.insert( make_pair(s, p) );
 	}
 	return *this;
 }

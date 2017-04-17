@@ -30,26 +30,29 @@ public:
 
 	class Node
 	{
+		BayesianNetwork* network;
 		vector<int> parentNodes;
 		vector<int> params;
-		// Row is predicted probability of param by index on params (equal to params.size())
-		// Columns are parents probability (2^parents columns num)
-		vector<vector<long double>> probabilities;
-		int colNum;
-		int rowNum;
+		vector<long double> paramDistribution;
+		//List of values indexes for next parents to probability od properties
+		map<vector<int>, vector<long double>> conditionalProbability = {};
 		friend class BayesianNetwork;
+		long double possibilityOf(vector<int> situation, map<int, int> knowladge);
 
 	public:
-		Node(vector<int> params);
-		Node(vector<int> params, vector<int> parentNodes);
+		Node(BayesianNetwork* network, vector<int> params);
+		Node(BayesianNetwork* network, vector<int> params, vector<int> parentNodes);
 		Node(const Node &);
 		long double probabilityOf(int value, map<int, int> knowladge);
 		Node withParamsLearned(DataSet dataSet, int index);
-		~Node();
 
-		static bool parentOnInRowId(int rowCode, int row) {
-			return rowCode >> row % 2 == 1;
+		vector<int> getParams() {
+			return vector<int>(params);
 		}
+		
+		~Node();
 	};
+
+	friend class Node;
 };
 

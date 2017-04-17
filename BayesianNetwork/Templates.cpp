@@ -75,6 +75,17 @@ _STy sumBy(std::vector<_Ty> iterable, _STy initial, _Fn1 _Func)
 	return sum;
 }
 
+template<class _STy, class _Ty, class _Fn1>
+_STy sumByIndexed(std::vector<_Ty> iterable, _STy initial, _Fn1 _Func)
+{
+	_STy sum = initial;
+	int i = 0
+	for (auto const& value : iterable) {
+		sum += _Func(value, i++);
+	}
+	return sum;
+}
+
 template<class _Ty>
 int sum(std::vector<_Ty> iterable)
 {
@@ -92,6 +103,42 @@ std::vector<_Ty2> mapTo(std::vector<_Ty> iterable, _Fn1 _Func)
 	for (auto const& value : iterable) {
 		_Ty2 newVal = _Func(value);
 		v.push_back(newVal);
+	}
+	return v;
+}
+
+template<class _Ty, class _Ty2, class _Fn1>
+std::vector<_Ty2> flatMap(std::vector<_Ty> iterable, _Fn1 _Func)
+{
+	std::vector<_Ty2> v = std::vector<_Ty2>();
+	for (auto const& value : iterable) {
+		vector<_Ty2> newVal = _Func(value);
+		v.insert(v.end(), newVal.begin(), newVal.end());
+	}
+	return v;
+}
+
+template<class _Ty>
+std::vector<_Ty> vecTail(std::vector<_Ty> iterable)
+{
+	std::vector<_Ty2> v = std::vector<_Ty2>();
+	int i = 0;
+	for (auto const& value : iterable) {
+		if (i++ == 0) continue;
+		_Ty2 newVal = _Func(value);
+		v.push_back(value);
+	}
+	return v;
+}
+
+template<class _Ty>
+std::vector<_Ty> vecInit(std::vector<_Ty> iterable)
+{
+	std::vector<_Ty> v = std::vector<_Ty>();
+	int i = 0;
+	for (auto const& value : iterable) {
+		if (i++ == iterable.size() - 1) continue;
+		v.push_back(value);
 	}
 	return v;
 }
