@@ -46,9 +46,9 @@ namespace TimeSeriesToolkit
 		TEST_METHOD(Correct_labels_creation_test)
 		{
 			DataSet data = DataSet(vector<vector<int>>{
-				    vector<int>{ 1, 2, 3 },
-					vector<int>{ 4, 5, 6 },
-					vector<int>{ 7, 8, 9 }
+			    vector<int>{ 1, 2, 3 },
+				vector<int>{ 4, 5, 6 },
+				vector<int>{ 7, 8, 9 }
 			});
 			Assert::AreEqual(set<string> { "1", "4", "7" }, data.paramsForColumn(0));
 			Assert::AreEqual(set<string> { "2", "5", "8" }, data.paramsForColumn(1));
@@ -57,15 +57,25 @@ namespace TimeSeriesToolkit
 
 		TEST_METHOD(Correct_labels_creation_test_with_repetitive_labels)
 		{
- 			DataSet data = DataSet(vector<vector<int>>{
- 			     	vector<int>{ 1, 1, 2 },
- 					vector<int>{ 2, 1, 2 },
- 					vector<int>{ 1, 1, 2 },
- 					vector<int>{ 2, 1, 2 }
- 			});
- 			Assert::AreEqual(set<string> { "1", "2" }, data.paramsForColumn(0));
- 			Assert::AreEqual(set<string> { "1" }, data.paramsForColumn(1));
- 			Assert::AreEqual(set<string> { "2" }, data.paramsForColumn(2));
+			DataSet data = DataSet(vector<vector<int>>{
+				vector<int>{ 1, 1, 2 },
+					vector<int>{ 2, 1, 2 },
+					vector<int>{ 1, 1, 2 },
+					vector<int>{ 2, 1, 2 }
+			});
+			Assert::AreEqual(set<string> { "1", "2" }, data.paramsForColumn(0));
+			Assert::AreEqual(set<string> { "1" }, data.paramsForColumn(1));
+			Assert::AreEqual(set<string> { "2" }, data.paramsForColumn(2));
+		}
+
+		TEST_METHOD(Single_values_label_test)
+		{
+			DataSet data = DataSet(vector<vector<int>>{
+				vector<int>{ 1, 10, 100 }
+			});
+			Assert::AreEqual(set<string> { "1" }, data.paramsForColumn(0));
+			Assert::AreEqual(set<string> { "10" }, data.paramsForColumn(1));
+			Assert::AreEqual(set<string> { "100" }, data.paramsForColumn(2));
 		}
 	};
 }

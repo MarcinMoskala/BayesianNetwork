@@ -19,6 +19,18 @@ public:
 	DataSet(vector<vector<int>> arr);
 	set<string> paramsForColumn(int columnNum);
 
+	vector<vector<int>> valuesInRow(int row) {
+		return data;
+	}
+
+	int rows() {
+		return data.size();
+	}
+
+	int columns() {
+		return params.size();
+	}
+
 	~DataSet() {};
 };
 
