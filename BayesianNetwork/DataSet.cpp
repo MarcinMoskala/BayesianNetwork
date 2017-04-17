@@ -3,11 +3,6 @@
 #include <stdexcept>
 
 int getColumnsNum(vector<vector<int>> v) {
-	for (auto const& line : v) {
-		if (v.size() != v.at(0).size()) {
-			throw invalid_argument("All data lines must have the same size");
-		}
-	}
 	return v.at(0).size();
 }
 

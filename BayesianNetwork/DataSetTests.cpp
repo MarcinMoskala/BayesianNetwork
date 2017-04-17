@@ -26,6 +26,13 @@ namespace Microsoft {
 				str += "}";
 				return stringToWstring(str);
 			}
+			template<>
+			static wstring ToString<set<int>>(const set<int> & coord) {
+				string str = "{ ";
+				for_each(coord.begin(), coord.end(), [&str](int i) -> void { str += to_string(i) + ", "; });
+				str += "}";
+				return stringToWstring(str);
+			}
 		}
 	}
 }
@@ -38,15 +45,27 @@ namespace TimeSeriesToolkit
 	public:
 		TEST_METHOD(Correct_labels_creation_test)
 		{
-			vector<vector<int>> theArray = vector<vector<int>> {
-				vector<int>{ 1,2,3 },
-				vector<int>{ 4,5,6 },
-				vector<int>{ 7,8,9 }
-			};
-			DataSet data = DataSet(theArray);
+			DataSet data = DataSet(vector<vector<int>>{
+				    vector<int>{ 1, 2, 3 },
+					vector<int>{ 4, 5, 6 },
+					vector<int>{ 7, 8, 9 }
+			});
 			Assert::AreEqual(set<string> { "1", "4", "7" }, data.paramsForColumn(0));
 			Assert::AreEqual(set<string> { "2", "5", "8" }, data.paramsForColumn(1));
 			Assert::AreEqual(set<string> { "3", "6", "9" }, data.paramsForColumn(2));
-		}	
+		}
+
+		TEST_METHOD(Correct_labels_creation_test_with_repetitive_labels)
+		{
+ 			DataSet data = DataSet(vector<vector<int>>{
+ 			     	vector<int>{ 1, 1, 2 },
+ 					vector<int>{ 2, 1, 2 },
+ 					vector<int>{ 1, 1, 2 },
+ 					vector<int>{ 2, 1, 2 }
+ 			});
+ 			Assert::AreEqual(set<string> { "1", "2" }, data.paramsForColumn(0));
+ 			Assert::AreEqual(set<string> { "1" }, data.paramsForColumn(1));
+ 			Assert::AreEqual(set<string> { "2" }, data.paramsForColumn(2));
+		}
 	};
 }
