@@ -33,10 +33,10 @@ vector<vector<int>> getValues(vector<vector<int>> v, vector<vector<int>> params)
 }
 
 vector<vector<int>> extractParams(vector<vector<int>> v) {
-	int columnsNum = getColumnsNum(v);
+	int paramsNum = getColumnsNum(v);
 
 	vector<vector<int>> paramsSets = vector<vector<int>>(0);
-	for (vector<int>::size_type columnIndex = 0; columnIndex != columnsNum; columnIndex++) {
+	for (vector<int>::size_type columnIndex = 0; columnIndex != paramsNum; columnIndex++) {
 		vector<int> params = vector<int>();
 		for (auto const& line : v) {
 			auto value = line.at(columnIndex);

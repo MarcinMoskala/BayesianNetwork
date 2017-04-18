@@ -40,7 +40,7 @@ BayesianNetwork::~BayesianNetwork()
 BayesianNetwork::BayesianNetwork(DataSet dataSet)
 {
 	nodes = vector<Node>{};
-	for (int i = 0; i < dataSet.columnsNum(); i++) {
+	for (int i = 0; i < dataSet.paramsNum(); i++) {
 		auto params = dataSet.paramsForColumn(i);
 		Node node = Node(this, params);
 		nodes.push_back(node);
@@ -106,6 +106,8 @@ vector<long double> BayesianNetwork::evaluate(vector<int> entry)
 
 long double BayesianNetwork::qualityFunction(DataSet dataSet)
 {
+//	for(int i = 0; i < dataSet.)
+
 	return 0;
 }
 

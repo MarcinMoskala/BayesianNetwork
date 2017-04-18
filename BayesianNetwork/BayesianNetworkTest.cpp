@@ -32,7 +32,7 @@ namespace BN
 		TEST_METHOD(When_there_is_only_one_row_then_probability_of_it_is_1_ant_for_other_values_it_is_0)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 2, 3 }
+					vector<int>{ 1, 2, 3 }
 			});
 			BayesianNetwork bn = BayesianNetwork(ds);
 			bn = bn.withParamsLearned(ds);
@@ -45,7 +45,7 @@ namespace BN
 		TEST_METHOD(Equaly_distributed_elements_are_equaly_probable)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1 },
+					vector<int>{ 1 },
 					vector<int>{ 2 }
 			});
 			BayesianNetwork bn = BayesianNetwork(ds);
@@ -57,7 +57,7 @@ namespace BN
 		TEST_METHOD(Simple_probability_check_with_no_restrictions)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1 },
+					vector<int>{ 1 },
 					vector<int>{ 1 },
 					vector<int>{ 1 },
 					vector<int>{ 2 }
@@ -71,7 +71,7 @@ namespace BN
 		TEST_METHOD(Simple_connections_can_excist_and_be_deleted)
 		{
 			BayesianNetwork bn = BayesianNetwork(DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1 },
+					vector<int>{ 1, 1 },
 					vector<int>{ 1, 1 },
 					vector<int>{ 1, 2 },
 					vector<int>{ 2, 2 }
@@ -85,7 +85,7 @@ namespace BN
 		TEST_METHOD(Simple_probability_check_with_restrictions_and_full_knowladge)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1 },
+					vector<int>{ 1, 1 },
 					vector<int>{ 1, 1 },
 					vector<int>{ 1, 2 },
 					vector<int>{ 2, 2 }
@@ -102,7 +102,7 @@ namespace BN
 		TEST_METHOD(Simple_probability_check_with_restrictions_and_partial_knowladge)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1, 1 },
+					vector<int>{ 1, 1, 1 },
 					vector<int>{ 1, 1, 2 },
 					vector<int>{ 1, 2, 1 },
 					vector<int>{ 2, 2, 2 }
@@ -124,6 +124,23 @@ namespace BN
 		}
 
 		TEST_METHOD(Transitive_probability_check_with_restrictions_and_partial_knowladge)
+		{
+			DataSet ds = DataSet(vector<vector<int>>{
+				vector<int>{ 1, 1, 1 },
+					vector<int>{ 1, 1, 2 },
+					vector<int>{ 2, 1, 2 },
+					vector<int>{ 1, 2, 1 },
+					vector<int>{ 2, 2, 2 }
+			});
+			BayesianNetwork bn = BayesianNetwork(ds);
+			bn = bn.withConnection(1, 0);
+			bn = bn.withConnection(2, 1);
+			bn = bn.withParamsLearned(ds);
+
+			Assert::AreEqual(33.0 / 54, bn.probabilityOf(0, 1, map<int, int> { make_pair(2, 2) }), 0.01);
+		}
+
+		TEST_METHOD(Evaluation_function_simple_test)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
 					vector<int>{ 1, 1, 1 },

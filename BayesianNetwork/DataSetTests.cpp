@@ -17,10 +17,20 @@ namespace BayesianNetwork
 	TEST_CLASS(DataSet_tests)
 	{
 	public:
+		TEST_METHOD(Rows_cols_test)
+		{
+			DataSet data = DataSet(vector<vector<int>>{
+					vector<int>{ 1, 2 },
+					vector<int>{ 4, 5 },
+					vector<int>{ 7, 8 }
+			});
+			Assert::AreEqual(3, data.dataPointsNum());
+			Assert::AreEqual(2, data.paramsNum());
+		}
 		TEST_METHOD(Correct_labels_creation_test)
 		{
 			DataSet data = DataSet(vector<vector<int>>{
-					vector<int>{ 1, 2, 3 },
+				vector<int>{ 1, 2, 3 },
 					vector<int>{ 4, 5, 6 },
 					vector<int>{ 7, 8, 9 }
 			});

@@ -27,11 +27,19 @@ public:
 		return data.at(col);
 	}
 
-	int rowNum() {
-		return data.size();
+	vector<vector<int>> getDataPoints() {
+		vector<vector<int>> dataPoints = {};
+		for (int i = 0; i < 1; i++) {
+			// TODO
+		}
+		return dataPoints;
 	}
 
-	int columnsNum() {
+	int dataPointsNum() {
+		return data.at(0).size();
+	}
+
+	int paramsNum() {
 		return params.size();
 	}
 
