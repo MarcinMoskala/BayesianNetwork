@@ -102,7 +102,7 @@ namespace BN
 		TEST_METHOD(Simple_probability_check_with_restrictions_and_partial_knowladge)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-					vector<int>{ 1, 1, 1 },
+				vector<int>{ 1, 1, 1 },
 					vector<int>{ 1, 1, 2 },
 					vector<int>{ 1, 2, 1 },
 					vector<int>{ 2, 2, 2 }
@@ -121,6 +121,23 @@ namespace BN
 			Assert::AreEqual(0.0L, bn.probabilityOf(0, 2, map<int, int> { make_pair(1, 1) }));
 			Assert::AreEqual(0.5L, bn.probabilityOf(0, 1, map<int, int> { make_pair(1, 2) }));
 			Assert::AreEqual(0.5L, bn.probabilityOf(0, 2, map<int, int> { make_pair(1, 2) }));
+		}
+
+		TEST_METHOD(Transitive_probability_check_with_restrictions_and_partial_knowladge)
+		{
+			DataSet ds = DataSet(vector<vector<int>>{
+					vector<int>{ 1, 1, 1 },
+					vector<int>{ 1, 1, 2 },
+					vector<int>{ 2, 1, 2 },
+					vector<int>{ 1, 2, 1 },
+					vector<int>{ 2, 2, 2 }
+			});
+			BayesianNetwork bn = BayesianNetwork(ds);
+			bn = bn.withConnection(1, 0);
+			bn = bn.withConnection(2, 1);
+			bn = bn.withParamsLearned(ds);
+
+			Assert::AreEqual(33.0 / 54, bn.probabilityOf(0, 1, map<int, int> { make_pair(2, 2) }), 0.01);
 		}
 	};
 }
