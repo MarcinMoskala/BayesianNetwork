@@ -348,8 +348,8 @@ namespace BN
 					vector<int>{ 2, 2, 1 },
 					vector<int>{ 2, 2, 2 }
 			});
-			BayesianNetwork bn = BayesianNetwork(ds);
-			//	.withStructureLearned(ds);
+			BayesianNetwork bn = BayesianNetwork(ds)
+				.withStructureLearned(ds);
 
 			Assert::IsTrue(bn.haveConnection(0, 1) || bn.haveConnection(1, 0));
 			Assert::IsFalse(
