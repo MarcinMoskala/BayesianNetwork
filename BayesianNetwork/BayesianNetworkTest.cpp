@@ -309,6 +309,19 @@ namespace BN
 			Assert::IsFalse(BayesianNetwork(ds).withConnection(1, 1).isCorrect());
 			Assert::IsFalse(BayesianNetwork(ds).withConnection(2, 2).isCorrect());
 		}
+
+		TEST_METHOD(Loops_are_not_correct)
+		{
+			DataSet ds = DataSet(vector<vector<int>>{
+				vector<int>{ 1, 1, 1 },
+					vector<int>{ 1, 1, 2 },
+					vector<int>{ 2, 2, 1 },
+					vector<int>{ 2, 2, 2 }
+			});
+			Assert::IsFalse(BayesianNetwork(ds).withConnection(0, 1).withConnection(1, 0).isCorrect());
+			Assert::IsFalse(BayesianNetwork(ds).withConnection(1, 2).withConnection(2, 1).isCorrect());
+			Assert::IsFalse(BayesianNetwork(ds).withConnection(0, 2).withConnection(2, 0).isCorrect());
+		}
 	};
 
 
