@@ -47,8 +47,6 @@ BayesianNetwork::BayesianNetwork(DataSet dataSet)
 	}
 }
 
-
-
 BayesianNetwork BayesianNetwork::withParamsLearned(DataSet dataSet)
 {
 	auto bn = BayesianNetwork(*this);
@@ -86,9 +84,9 @@ bool BayesianNetwork::haveConnection(int fromIndex, int toIndex)
 
 long double BayesianNetwork::probabilityOf(int node, int valueParam, map<int, int> knowladge)
 {
-	if (knowladge.count(node)) {
+	if (knowladge.count(node))
 		return knowladge[node] == valueParam;
-	} else 
+	else
 		return nodes.at(node).probabilityOf(valueParam, knowladge);
 }
 
@@ -115,7 +113,8 @@ long double BayesianNetwork::qualityFunction(DataSet dataSet)
 			r += probabilityOf(i, point.at(i), knowladge);
 		}
 	}
-	return r/ dataSet.dataPointsNum() / dataSet.paramsNum();
+	int connections = sumBy(nodes, 1, [](Node n) -> int { return n.getParentNodeNum(); });
+	return r/ dataSet.dataPointsNum() / dataSet.paramsNum() / pow(connections, 1.0 / 10);
 }
 
 // TODO Copy

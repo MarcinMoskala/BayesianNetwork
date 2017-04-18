@@ -48,6 +48,17 @@ public:
 		vector<int> getParams() {
 			return vector<int>(params);
 		}
+
+		vector<int> getParentNodes() {
+			return vector<int>(parentNodes);
+		}
+
+		int getParentNodeNum() {
+			if (parentNodes.empty())
+				return 0;
+			else
+				return parentNodes.size();
+		}
 		
 		~Node();
 	};
