@@ -167,6 +167,36 @@ std::vector<_Ty> vecTail(std::vector<_Ty> iterable)
 	return v;
 }
 
+template<class _Ty1, class _Ty2>
+std::vector<std::pair<_Ty1, _Ty2>> zip(std::vector<_Ty1> v1, std::vector<_Ty2> v2) {
+	std::vector<std::pair<_Ty1, _Ty2>> v = {};
+	for (int i = 0; i < v1.size(); i++) {
+		v.push_back(std::make_pair(v1.at(i), v2.at(i)));
+	}
+	return v;
+}
+
+template<class _Ty, class _Fn1>
+bool allTrue(std::vector<_Ty> iterable, _Fn1 _Func) {
+	for (auto const& value : iterable) {
+		if (!_Func(value)) {
+			return false;
+		}
+	}
+	return true;
+}
+
+template<class _Ty, class _Fn1>
+bool allTrueIndexed(std::vector<_Ty> iterable, _Fn1 _Func) {
+	int i = 0;
+	for (auto const& value : iterable) {
+		if (!_Func(value, i++)) {
+			return false;
+		}
+	}
+	return true;
+}
+
 template<class _Ty>
 std::vector<_Ty> vecInit(std::vector<_Ty> iterable)
 {

@@ -18,6 +18,7 @@ public:
 	BayesianNetwork withConnection(int fromIndex, int toIndex);
 	BayesianNetwork withoutConnection(int fromIndex, int toIndex);
 	bool haveConnection(int fromIndex, int toIndex);
+	bool isCorrect();
 	long double probabilityOf(int node, int value, map<int, int> knowlagde);
 	long double probabilityOf(int node, int value);
 	vector<long double> evaluate(vector<int> entry);

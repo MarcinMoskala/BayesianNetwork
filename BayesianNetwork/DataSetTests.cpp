@@ -11,7 +11,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
 
 #pragma once
-namespace BayesianNetwork
+namespace BN
 {
 
 	TEST_CLASS(DataSet_tests)

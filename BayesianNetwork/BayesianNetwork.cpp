@@ -56,9 +56,49 @@ BayesianNetwork BayesianNetwork::withParamsLearned(DataSet dataSet)
 	return bn;
 }
 
+BayesianNetwork bestOnGreedyLearn(BayesianNetwork bn, DataSet ds) {
+	int nodesNum = bn.getNodes().size();
+	BayesianNetwork bestBn = bn;
+	long double bestBnResult = bn.withParamsLearned(ds).qualityFunction(ds);
+	bool changed = false;
+	for (int i = 0; i < nodesNum; i++) {
+		for (int j = 0; j < nodesNum; j++) {
+			if (i == j) {
+				continue;
+			}
+
+			BayesianNetwork newBn = BayesianNetwork(bn);
+			if (newBn.haveConnection(i, j)) {
+				newBn = newBn.withoutConnection(i, j);
+			}
+			else {
+				newBn = newBn.withConnection(i, j);
+			}
+
+			if (!newBn.isCorrect()) {
+				continue;
+			}
+
+			auto r = newBn.withParamsLearned(ds).qualityFunction(ds);
+			if (r > bestBnResult) {
+				bestBnResult = r;
+				bestBn = newBn;
+				changed = true;
+			}
+		}
+	}
+	if (changed) {
+		return bestOnGreedyLearn(bestBn, ds);
+	}
+	else {
+		return bestBn;
+	}
+}
+
 BayesianNetwork BayesianNetwork::withStructureLearned(DataSet dataSet)
 {
-	return BayesianNetwork(*this);
+	// Brute force algorithm
+	return bestOnGreedyLearn(BayesianNetwork(*this), dataSet);
 }
 
 BayesianNetwork BayesianNetwork::withConnection(int fromIndex, int toIndex)
@@ -80,6 +120,25 @@ BayesianNetwork BayesianNetwork::withoutConnection(int fromIndex, int toIndex)
 bool BayesianNetwork::haveConnection(int fromIndex, int toIndex)
 {
 	return contains(nodes.at(toIndex).parentNodes, fromIndex);
+}
+
+bool parentsDoesNotContainsId(BayesianNetwork* net, BayesianNetwork::Node n, int id) {
+	auto p = n.getParentNodes();
+	if (p.empty()) {
+		return true;
+	}
+	int i = indexOf(p, id);
+	if (i > 0 && i < p.size()) {
+		return false;
+	}
+
+	auto parents = mapTo<int, BayesianNetwork::Node>(p, [net](int i) -> BayesianNetwork::Node { return net->getNodes().at(i); });
+	return allTrue(parents, [net, id](BayesianNetwork::Node n) -> bool { return parentsDoesNotContainsId(net, n, id); });
+}
+
+bool BayesianNetwork::isCorrect()
+{
+	return allTrueIndexed(nodes, [this](Node n, int id) -> bool { return parentsDoesNotContainsId(this, n, id); });
 }
 
 long double BayesianNetwork::probabilityOf(int node, int valueParam, map<int, int> knowladge)
@@ -119,7 +178,7 @@ long double BayesianNetwork::qualityFunction(DataSet dataSet)
 
 // TODO Copy
 vector<BayesianNetwork::Node> BayesianNetwork::getNodes() {
-	return nodes;
+	return vector<Node>(nodes);
 }
 
 BayesianNetwork::Node::Node(BayesianNetwork* network, vector<int> params)

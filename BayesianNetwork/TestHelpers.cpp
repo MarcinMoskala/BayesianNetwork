@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include <CppUnitTest.h>  
 #include "DataSet.h"
+#include "BayesianNetwork.h"
 #include "Templates.cpp"
 #include <vector>
 #include <cassert>
@@ -26,6 +27,22 @@ namespace Microsoft {
 			static wstring longDoubleToWString(long double ld) {
 				std::stringstream ss;
 				ss << ld;
+				return stringToWstring(ss.str());
+			}
+
+			template<>
+			static wstring ToString<BayesianNetwork>(const BayesianNetwork & bn) {
+				std::stringstream ss;
+				ss << "BayesianNetwork: ";
+				ss << &bn;
+				return stringToWstring(ss.str());
+			}
+
+			template<>
+			static wstring ToString<BayesianNetwork::Node>(const BayesianNetwork::Node & n) {
+				std::stringstream ss;
+				ss << "Node: ";
+				ss << &n;
 				return stringToWstring(ss.str());
 			}
 

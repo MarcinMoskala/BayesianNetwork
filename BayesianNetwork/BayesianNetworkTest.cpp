@@ -18,6 +18,30 @@ namespace BN
 	TEST_CLASS(BayesianNetwork_tests)
 	{
 	public:
+
+		void assertIsDifferent(BayesianNetwork& b1, BayesianNetwork& b2) {
+
+		}
+
+		TEST_METHOD(Copying_constructor_test)
+		{
+			DataSet ds = DataSet(vector<vector<int>>{
+				vector<int>{ 1, 1, 1 },
+					vector<int>{ 1, 1, 2 },
+					vector<int>{ 2, 1, 2 },
+					vector<int>{ 1, 2, 1 },
+					vector<int>{ 2, 2, 2 }
+			});
+			BayesianNetwork bn = BayesianNetwork(ds);
+			BayesianNetwork bn2 = bn.withParamsLearned(ds);
+			
+			Assert::AreNotSame(bn, bn2);
+			
+			for (auto const p : zip(bn.getNodes(), bn2.getNodes())) {
+				Assert::AreNotSame(p.first, p.second);
+			}
+		}
+
 		TEST_METHOD(BayesianNetwork_from_data_model_have_nodes_for_each_row)
 		{
 			BayesianNetwork bn = BayesianNetwork(DataSet(vector<vector<int>>{
@@ -126,7 +150,7 @@ namespace BN
 		TEST_METHOD(Transitive_probability_check_with_restrictions_and_partial_knowladge)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-					vector<int>{ 1, 1, 1 },
+				vector<int>{ 1, 1, 1 },
 					vector<int>{ 1, 1, 2 },
 					vector<int>{ 2, 1, 2 },
 					vector<int>{ 1, 2, 1 },
@@ -184,7 +208,7 @@ namespace BN
 		TEST_METHOD(Quality_function_is_bigger_when_connection_is_correct)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1, 1 },
+					vector<int>{ 1, 1, 1 },
 					vector<int>{ 1, 1, 2 },
 					vector<int>{ 2, 2, 1 },
 					vector<int>{ 2, 2, 2 }
@@ -208,7 +232,7 @@ namespace BN
 		TEST_METHOD(Quality_function_is_worse_when_connection_is_useless)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-					vector<int>{ 1, 1, 1 },
+				vector<int>{ 1, 1, 1 },
 					vector<int>{ 1, 1, 2 },
 					vector<int>{ 2, 2, 1 },
 					vector<int>{ 2, 2, 2 }
@@ -226,8 +250,42 @@ namespace BN
 			newQF = bn.withConnection(2, 1)
 				.withParamsLearned(ds)
 				.qualityFunction(ds);
-		
+
 			Assert::IsTrue(newQF < prevQF);
+		}
+
+		TEST_METHOD(Single_connection_is_always_correct)
+		{
+			DataSet ds = DataSet(vector<vector<int>>{
+				vector<int>{ 1, 1, 1 },
+					vector<int>{ 1, 1, 2 },
+					vector<int>{ 2, 2, 1 },
+					vector<int>{ 2, 2, 2 }
+			});
+			Assert::IsTrue(BayesianNetwork(ds).withConnection(1, 2).isCorrect());
+			Assert::IsTrue(BayesianNetwork(ds).withConnection(0, 2).isCorrect());
+			Assert::IsTrue(BayesianNetwork(ds).withConnection(1, 0).isCorrect());
+			Assert::IsTrue(BayesianNetwork(ds).withConnection(2, 0).isCorrect());
+			Assert::IsTrue(BayesianNetwork(ds).withConnection(2, 1).isCorrect());
+			Assert::IsTrue(BayesianNetwork(ds).withConnection(0, 1).isCorrect());
+		}
+
+		TEST_METHOD(Simple_function_learning_is_correct)
+		{
+			DataSet ds = DataSet(vector<vector<int>>{
+					vector<int>{ 1, 1, 1 },
+					vector<int>{ 1, 1, 2 },
+					vector<int>{ 2, 2, 1 },
+					vector<int>{ 2, 2, 2 }
+			});
+			BayesianNetwork bn = BayesianNetwork(ds);
+			//	.withStructureLearned(ds);
+		
+			Assert::IsTrue(bn.haveConnection(0, 1) || bn.haveConnection(1, 0));
+			Assert::IsFalse(
+				bn.haveConnection(1, 2) || bn.haveConnection(0, 2) ||
+				bn.haveConnection(2, 1) || bn.haveConnection(2, 0)
+			);
 		}
 	};
 }
