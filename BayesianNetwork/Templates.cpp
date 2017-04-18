@@ -109,7 +109,7 @@ std::vector<_Ty2> mapTo(std::vector<_Ty> iterable, _Fn1 _Func)
 }
 
 template<class _Ty, class _Ty2, class _Ty3, class _Fn1>
-std::vector<_Ty2, _Ty3> mapToMap(std::vector<_Ty> iterable, _Fn1 _Func)
+std::map<_Ty2, _Ty3> mapToMap(std::vector<_Ty> iterable, _Fn1 _Func)
 {
 	std::map<_Ty2, _Ty3> m = std::map<_Ty2, _Ty3>{};
 	for (auto const& value : iterable) {
