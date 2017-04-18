@@ -27,13 +27,7 @@ public:
 		return data.at(col);
 	}
 
-	vector<vector<int>> getDataPoints() {
-		vector<vector<int>> dataPoints = {};
-		for (int i = 0; i < 1; i++) {
-			// TODO
-		}
-		return dataPoints;
-	}
+	vector<vector<int>> getDataPoints();
 
 	int dataPointsNum() {
 		return data.at(0).size();

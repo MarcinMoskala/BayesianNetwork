@@ -90,4 +90,20 @@ vector<int> DataSet::countParams(int columnNum, map<int, int> knowladge)
 	return counter;
 }
 
+vector<vector<int>> DataSet::getDataPoints() {
+	int dPNum = dataPointsNum();
+	int pNum = paramsNum();
+	vector<vector<int>> dataPoints = {};
+	for (int i = 0; i < dPNum; i++) {
+		vector<int> dataPoint = {};
+		for (int j = 0; j < pNum; j++) {
+			auto dataIndex = data.at(j).at(i);
+			auto data = params.at(j).at(dataIndex);
+			dataPoint.push_back(data);
+		}
+		dataPoints.push_back(dataPoint);
+	}
+	return dataPoints;
+}
+
 #endif
