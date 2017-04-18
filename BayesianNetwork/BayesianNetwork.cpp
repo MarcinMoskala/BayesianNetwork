@@ -154,19 +154,20 @@ long double BayesianNetwork::Node::possibilityOf(vector<int> situation, map<int,
 
 long double BayesianNetwork::Node::probabilityOf(int valueParam, map<int, int> knowladge)
 {
+	int indexOfParam = indexOf(params, valueParam);
+	if (indexOfParam < 0 || indexOfParam >= paramDistribution.size())
+		return 0.0L;
 	if (knowladge.empty()) {
-		int index = indexOf(params, valueParam);
-		if (index < 0 || index >= paramDistribution.size())
-			return 0.0L;
-		return paramDistribution.at(index);
+		return paramDistribution.at(indexOfParam);
 	}
 	else 
 	{
 		long double finalP = 0.0L;
 		for (auto const &prob : conditionalProbability) {
 			auto situation = prob.first;
-			auto p = prob.second;
-			finalP += possibilityOf(situation, knowladge);
+			auto paramProbabilities = prob.second;
+			auto p = paramProbabilities.at(indexOfParam);
+			finalP += p * possibilityOf(situation, knowladge);
 		}
 		return finalP;
 	}
