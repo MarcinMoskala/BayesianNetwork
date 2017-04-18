@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <set>
+#include <map>
 #include <numeric>
 #include <iterator>
 
@@ -105,6 +106,41 @@ std::vector<_Ty2> mapTo(std::vector<_Ty> iterable, _Fn1 _Func)
 		v.push_back(newVal);
 	}
 	return v;
+}
+
+template<class _Ty, class _Ty2, class _Ty3, class _Fn1>
+std::vector<_Ty2, _Ty3> mapToMap(std::vector<_Ty> iterable, _Fn1 _Func)
+{
+	std::map<_Ty2, _Ty3> m = std::map<_Ty2, _Ty3>{};
+	for (auto const& value : iterable) {
+		std::pair<_Ty2, _Ty3> newVal = _Func(value);
+		m[newVal.first] = newVal.second;
+	}
+	return m;
+}
+
+template<class _Ty2, class _Ty3, class _Fn1>
+std::map<_Ty2, _Ty3> mapFilter(std::map<_Ty2, _Ty3> iterable, _Fn1 _Func)
+{
+	std::map<_Ty2, _Ty3> m = std::map<_Ty2, _Ty3> {};
+	for (auto const& value : iterable) {
+		if (_Func(value.first, value.second)) {
+			m[value.first] = value.second;
+		}
+	}
+	return m;
+}
+
+template<class _Ty, class _Ty2, class _Ty3, class _Fn1>
+std::map<_Ty2, _Ty3> mapToMapIndexed(std::vector<_Ty> iterable, _Fn1 _Func)
+{
+	std::map<_Ty2, _Ty3> m = std::map<_Ty2, _Ty3>{};
+	int i = 0;
+	for (auto const& value : iterable) {
+		std::pair<_Ty2, _Ty3> newVal = _Func(value, i++);
+		m[newVal.first] = newVal.second;
+	}
+	return m;
 }
 
 template<class _Ty, class _Ty2, class _Fn1>

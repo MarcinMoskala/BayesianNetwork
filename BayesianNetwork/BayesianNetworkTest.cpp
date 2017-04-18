@@ -126,7 +126,7 @@ namespace BN
 		TEST_METHOD(Transitive_probability_check_with_restrictions_and_partial_knowladge)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1, 1 },
+					vector<int>{ 1, 1, 1 },
 					vector<int>{ 1, 1, 2 },
 					vector<int>{ 2, 1, 2 },
 					vector<int>{ 1, 2, 1 },
@@ -143,7 +143,7 @@ namespace BN
 		TEST_METHOD(Evaluation_function_simple_test)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-					vector<int>{ 1, 1, 1 },
+				vector<int>{ 1, 1, 1 },
 					vector<int>{ 1, 1, 2 },
 					vector<int>{ 2, 1, 2 },
 					vector<int>{ 1, 2, 1 },
@@ -155,6 +155,25 @@ namespace BN
 			bn = bn.withParamsLearned(ds);
 
 			Assert::AreEqual(33.0 / 54, bn.probabilityOf(0, 1, map<int, int> { make_pair(2, 2) }), 0.01);
+		}
+
+		TEST_METHOD(Quality_function_is_returning_lesstthen0_value)
+		{
+			DataSet ds = DataSet(vector<vector<int>>{
+					vector<int>{ 1, 1, 1 },
+					vector<int>{ 1, 1, 2 },
+					vector<int>{ 2, 1, 2 },
+					vector<int>{ 1, 2, 1 },
+					vector<int>{ 2, 2, 2 }
+			});
+			BayesianNetwork bn = BayesianNetwork(ds);
+			bn = bn.withParamsLearned(ds);
+			Assert::IsTrue(bn.qualityFunction(ds) < 1.0L);
+
+			bn = bn.withConnection(1, 0);
+			bn = bn.withConnection(2, 1);
+			bn = bn.withParamsLearned(ds);
+			Assert::IsTrue(bn.qualityFunction(ds) < 1.0L);
 		}
 	};
 }
