@@ -22,7 +22,7 @@ namespace BN
 		TEST_METHOD(Copying_constructor_test)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1, 1 },
+					vector<int>{ 1, 1, 1 },
 					vector<int>{ 1, 1, 2 },
 					vector<int>{ 2, 1, 2 },
 					vector<int>{ 1, 2, 1 },
@@ -356,6 +356,24 @@ namespace BN
 				bn.haveConnection(1, 2) || bn.haveConnection(0, 2) ||
 				bn.haveConnection(2, 1) || bn.haveConnection(2, 0)
 			);
+		}
+
+		TEST_METHOD(Complex_function_learning_is_working)
+		{
+			DataSet ds = DataSet(vector<vector<int>>{
+				vector<int>{ 1, 1, 1, 4 },
+				vector<int>{ 1, 1, 2, 2 },
+				vector<int>{ 2, 2, 1, 4 },
+				vector<int>{ 2, 2, 2, 4 },
+				vector<int>{ 1, 2, 2, 4 },
+				vector<int>{ 1, 1, 2, 4 },
+				vector<int>{ 2, 2, 1, 4 },
+				vector<int>{ 1, 2, 2, 2 },
+				vector<int>{ 1, 1, 1, 2 },
+				vector<int>{ 2, 1, 2, 4 },
+			});
+			BayesianNetwork bn = BayesianNetwork(ds)
+				.withStructureLearned(ds);
 		}
 	};
 };
