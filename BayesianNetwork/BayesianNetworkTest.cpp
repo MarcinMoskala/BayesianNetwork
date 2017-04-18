@@ -111,6 +111,12 @@ namespace BN
 			bn = bn.withConnection(1, 0);
 			bn = bn.withConnection(2, 0);
 			bn = bn.withParamsLearned(ds);
+			Assert::AreEqual(0.5L, bn.probabilityOf(2, 1, map<int, int> { make_pair(1, 1) }));
+			Assert::AreEqual(0.5L, bn.probabilityOf(2, 2, map<int, int> { make_pair(1, 1) }));
+
+			Assert::AreEqual(1.0L, bn.probabilityOf(1, 1, map<int, int> { make_pair(1, 1) }));
+			Assert::AreEqual(0.0L, bn.probabilityOf(1, 2, map<int, int> { make_pair(1, 1) }));
+
 			Assert::AreEqual(1.0L, bn.probabilityOf(0, 1, map<int, int> { make_pair(1, 1) }));
 			Assert::AreEqual(0.0L, bn.probabilityOf(0, 2, map<int, int> { make_pair(1, 1) }));
 			Assert::AreEqual(0.5L, bn.probabilityOf(0, 1, map<int, int> { make_pair(1, 2) }));

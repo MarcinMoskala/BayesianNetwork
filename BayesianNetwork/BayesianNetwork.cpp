@@ -86,12 +86,15 @@ bool BayesianNetwork::haveConnection(int fromIndex, int toIndex)
 
 long double BayesianNetwork::probabilityOf(int node, int valueParam, map<int, int> knowladge)
 {
-	return nodes.at(node).probabilityOf(valueParam, knowladge);
+	if (knowladge.count(node)) {
+		return knowladge[node] == valueParam;
+	} else 
+		return nodes.at(node).probabilityOf(valueParam, knowladge);
 }
 
 long double BayesianNetwork::probabilityOf(int node, int valueParam)
 {
-	return nodes.at(node).probabilityOf(valueParam, map<int, int> {});
+	return probabilityOf(node, valueParam, map<int, int> {});
 }
 
 vector<long double> BayesianNetwork::evaluate(vector<int> entry)
@@ -140,10 +143,9 @@ long double BayesianNetwork::Node::possibilityOf(vector<int> situation, map<int,
 		auto it = knowladge.find(parentIndex);
 		if (it == knowladge.end()) {
 			// No knowladge about this param
-			auto parent = parents.at(i);
-			auto valueOfParam = situation.at(i);
-			auto indexOfValueOfParam = indexOf(parent.params, valueOfParam);
-			p *= parent.paramDistribution.at(indexOfValueOfParam);
+			auto paramValue = situation.at(i);
+			auto pos = network->probabilityOf(parentIndex, paramValue, knowladge);
+			p *= pos;
 		}
 		else if (it->second == situation.at(i)) {
 			p *= 1.0L;
@@ -160,7 +162,8 @@ long double BayesianNetwork::Node::probabilityOf(int valueParam, map<int, int> k
 	int indexOfParam = indexOf(params, valueParam);
 	if (indexOfParam < 0 || indexOfParam >= paramDistribution.size())
 		return 0.0L;
-	if (knowladge.empty()) {
+
+	if (knowladge.empty() || conditionalProbability.empty()) {
 		return paramDistribution.at(indexOfParam);
 	}
 	else 
