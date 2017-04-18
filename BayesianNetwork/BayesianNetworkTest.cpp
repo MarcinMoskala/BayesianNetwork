@@ -22,11 +22,11 @@ namespace BN
 		TEST_METHOD(Copying_constructor_test)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-					vector<int>{ 1, 1, 1 },
-					vector<int>{ 1, 1, 2 },
-					vector<int>{ 2, 1, 2 },
-					vector<int>{ 1, 2, 1 },
-					vector<int>{ 2, 2, 2 }
+					{ 1, 1, 1 },
+					{ 1, 1, 2 },
+					{ 2, 1, 2 },
+					{ 1, 2, 1 },
+					{ 2, 2, 2 }
 			});
 			BayesianNetwork bn = BayesianNetwork(ds);
 			BayesianNetwork bn2 = bn.withParamsLearned(ds);
@@ -41,10 +41,10 @@ namespace BN
 		TEST_METHOD(BayesianNetwork_from_data_model_have_nodes_for_each_row)
 		{
 			BayesianNetwork bn = BayesianNetwork(DataSet(vector<vector<int>>{
-					vector<int>{ 1, 1, 2 },
-					vector<int>{ 2, 1, 2 },
-					vector<int>{ 1, 1, 2 },
-					vector<int>{ 2, 1, 2 }
+					{ 1, 1, 2 },
+					{ 2, 1, 2 },
+					{ 1, 1, 2 },
+					{ 2, 1, 2 }
 			}));
 			Assert::AreEqual(3, (int)bn.getNodes().size());
 		}
@@ -52,7 +52,7 @@ namespace BN
 		TEST_METHOD(When_there_is_only_one_row_then_probability_of_it_is_1_ant_for_other_values_it_is_0)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-					vector<int>{ 1, 2, 3 }
+					{ 1, 2, 3 }
 			});
 			BayesianNetwork bn = BayesianNetwork(ds);
 			bn = bn.withParamsLearned(ds);
@@ -65,8 +65,8 @@ namespace BN
 		TEST_METHOD(Equaly_distributed_elements_are_equaly_probable)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-					vector<int>{ 1 },
-					vector<int>{ 2 }
+					{ 1 },
+					{ 2 }
 			});
 			BayesianNetwork bn = BayesianNetwork(ds);
 			bn = bn.withParamsLearned(ds);
@@ -77,10 +77,10 @@ namespace BN
 		TEST_METHOD(Simple_probability_check_with_no_restrictions)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-					vector<int>{ 1 },
-					vector<int>{ 1 },
-					vector<int>{ 1 },
-					vector<int>{ 2 }
+					{ 1 },
+					{ 1 },
+					{ 1 },
+					{ 2 }
 			});
 			BayesianNetwork bn = BayesianNetwork(ds);
 			bn = bn.withParamsLearned(ds);
@@ -91,10 +91,10 @@ namespace BN
 		TEST_METHOD(Simple_connections_can_excist_and_be_deleted)
 		{
 			BayesianNetwork bn = BayesianNetwork(DataSet(vector<vector<int>>{
-					vector<int>{ 1, 1 },
-					vector<int>{ 1, 1 },
-					vector<int>{ 1, 2 },
-					vector<int>{ 2, 2 }
+					{ 1, 1 },
+					{ 1, 1 },
+					{ 1, 2 },
+					{ 2, 2 }
 			}));
 			bn = bn.withConnection(1, 0);
 			Assert::IsTrue(bn.haveConnection(1, 0));
@@ -105,10 +105,10 @@ namespace BN
 		TEST_METHOD(Simple_probability_check_with_restrictions_and_full_knowladge)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-					vector<int>{ 1, 1 },
-					vector<int>{ 1, 1 },
-					vector<int>{ 1, 2 },
-					vector<int>{ 2, 2 }
+					{ 1, 1 },
+					{ 1, 1 },
+					{ 1, 2 },
+					{ 2, 2 }
 			});
 			BayesianNetwork bn = BayesianNetwork(ds);
 			bn = bn.withConnection(1, 0);
@@ -122,10 +122,10 @@ namespace BN
 		TEST_METHOD(Simple_probability_check_with_restrictions_and_partial_knowladge)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-					vector<int>{ 1, 1, 1 },
-					vector<int>{ 1, 1, 2 },
-					vector<int>{ 1, 2, 1 },
-					vector<int>{ 2, 2, 2 }
+					{ 1, 1, 1 },
+					{ 1, 1, 2 },
+					{ 1, 2, 1 },
+					{ 2, 2, 2 }
 			});
 			BayesianNetwork bn = BayesianNetwork(ds);
 			bn = bn.withConnection(1, 0);
@@ -146,11 +146,11 @@ namespace BN
 		TEST_METHOD(Transitive_probability_check_with_restrictions_and_partial_knowladge)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1, 1 },
-					vector<int>{ 1, 1, 2 },
-					vector<int>{ 2, 1, 2 },
-					vector<int>{ 1, 2, 1 },
-					vector<int>{ 2, 2, 2 }
+				{ 1, 1, 1 },
+				{ 1, 1, 2 },
+				{ 2, 1, 2 },
+				{ 1, 2, 1 },
+				{ 2, 2, 2 }
 			});
 			BayesianNetwork bn = BayesianNetwork(ds);
 			bn = bn.withConnection(1, 0);
@@ -163,11 +163,11 @@ namespace BN
 		TEST_METHOD(Evaluation_function_simple_test)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1, 1 },
-					vector<int>{ 1, 1, 2 },
-					vector<int>{ 2, 1, 2 },
-					vector<int>{ 1, 2, 1 },
-					vector<int>{ 2, 2, 2 }
+				{ 1, 1, 1 },
+				{ 1, 1, 2 },
+				{ 2, 1, 2 },
+				{ 1, 2, 1 },
+				{ 2, 2, 2 }
 			});
 			BayesianNetwork bn = BayesianNetwork(ds);
 			bn = bn.withConnection(1, 0);
@@ -185,11 +185,11 @@ namespace BN
 		TEST_METHOD(Quality_function_is_returning_lesstthen0_value)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1, 1 },
-					vector<int>{ 1, 1, 2 },
-					vector<int>{ 2, 1, 2 },
-					vector<int>{ 1, 2, 1 },
-					vector<int>{ 2, 2, 2 }
+				{ 1, 1, 1 },
+				{ 1, 1, 2 },
+				{ 2, 1, 2 },
+				{ 1, 2, 1 },
+				{ 2, 2, 2 }
 			});
 			BayesianNetwork bn = BayesianNetwork(ds);
 			bn = bn.withParamsLearned(ds);
@@ -204,10 +204,10 @@ namespace BN
 		TEST_METHOD(Quality_function_is_bigger_when_connection_is_correct)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-					vector<int>{ 1, 1, 1 },
-					vector<int>{ 1, 1, 2 },
-					vector<int>{ 2, 2, 1 },
-					vector<int>{ 2, 2, 2 }
+					{ 1, 1, 1 },
+					{ 1, 1, 2 },
+					{ 2, 2, 1 },
+					{ 2, 2, 2 }
 			});
 			BayesianNetwork bn = BayesianNetwork(ds);
 			auto prevQF = bn
@@ -228,10 +228,10 @@ namespace BN
 		TEST_METHOD(Quality_function_is_worse_when_connection_is_useless)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1, 1 },
-					vector<int>{ 1, 1, 2 },
-					vector<int>{ 2, 2, 1 },
-					vector<int>{ 2, 2, 2 }
+				{ 1, 1, 1 },
+				{ 1, 1, 2 },
+				{ 2, 2, 1 },
+				{ 2, 2, 2 }
 			});
 			BayesianNetwork bn = BayesianNetwork(ds);
 			auto prevQF = bn
@@ -258,10 +258,10 @@ namespace BN
 		TEST_METHOD(Single_connection_is_always_correct)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1, 1 },
-					vector<int>{ 1, 1, 2 },
-					vector<int>{ 2, 2, 1 },
-					vector<int>{ 2, 2, 2 }
+				{ 1, 1, 1 },
+				{ 1, 1, 2 },
+				{ 2, 2, 1 },
+				{ 2, 2, 2 }
 			});
 			Assert::IsTrue(BayesianNetwork(ds).withConnection(1, 2).isCorrect());
 			Assert::IsTrue(BayesianNetwork(ds).withConnection(0, 2).isCorrect());
@@ -274,10 +274,10 @@ namespace BN
 		TEST_METHOD(V_connections_are_correct)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1, 1 },
-					vector<int>{ 1, 1, 2 },
-					vector<int>{ 2, 2, 1 },
-					vector<int>{ 2, 2, 2 }
+				{ 1, 1, 1 },
+				{ 1, 1, 2 },
+				{ 2, 2, 1 },
+				{ 2, 2, 2 }
 			});
 			Assert::IsTrue(BayesianNetwork(ds).withConnection(1, 2).withConnection(0, 2).isCorrect());
 			Assert::IsTrue(BayesianNetwork(ds).withConnection(2, 1).withConnection(0, 1).isCorrect());
@@ -287,10 +287,10 @@ namespace BN
 		TEST_METHOD(A_connections_are_correct)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1, 1 },
-					vector<int>{ 1, 1, 2 },
-					vector<int>{ 2, 2, 1 },
-					vector<int>{ 2, 2, 2 }
+				{ 1, 1, 1 },
+				{ 1, 1, 2 },
+				{ 2, 2, 1 },
+				{ 2, 2, 2 }
 			});
 			Assert::IsTrue(BayesianNetwork(ds).withConnection(2, 1).withConnection(2, 0).isCorrect());
 			Assert::IsTrue(BayesianNetwork(ds).withConnection(1, 0).withConnection(1, 2).isCorrect());
@@ -300,10 +300,10 @@ namespace BN
 		TEST_METHOD(Self_connections_are_not_correct)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1, 1 },
-					vector<int>{ 1, 1, 2 },
-					vector<int>{ 2, 2, 1 },
-					vector<int>{ 2, 2, 2 }
+				{ 1, 1, 1 },
+				{ 1, 1, 2 },
+				{ 2, 2, 1 },
+				{ 2, 2, 2 }
 			});
 			Assert::IsFalse(BayesianNetwork(ds).withConnection(0, 0).isCorrect());
 			Assert::IsFalse(BayesianNetwork(ds).withConnection(1, 1).isCorrect());
@@ -313,10 +313,10 @@ namespace BN
 		TEST_METHOD(Loops_are_not_correct)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1, 1 },
-					vector<int>{ 1, 1, 2 },
-					vector<int>{ 2, 2, 1 },
-					vector<int>{ 2, 2, 2 }
+				{ 1, 1, 1 },
+				{ 1, 1, 2 },
+				{ 2, 2, 1 },
+				{ 2, 2, 2 }
 			});
 			Assert::IsFalse(BayesianNetwork(ds).withConnection(0, 1).withConnection(1, 0).isCorrect());
 			Assert::IsFalse(BayesianNetwork(ds).withConnection(1, 2).withConnection(2, 1).isCorrect());
@@ -326,10 +326,10 @@ namespace BN
 		TEST_METHOD(Long_loops_are_not_correct)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1, 1 },
-					vector<int>{ 1, 1, 2 },
-					vector<int>{ 2, 2, 1 },
-					vector<int>{ 2, 2, 2 }
+				{ 1, 1, 1 },
+				{ 1, 1, 2 },
+				{ 2, 2, 1 },
+				{ 2, 2, 2 }
 			});
 			Assert::IsFalse(BayesianNetwork(ds).withConnection(0, 1).withConnection(1, 2).withConnection(2, 0).isCorrect());
 			Assert::IsFalse(BayesianNetwork(ds).withConnection(1, 0).withConnection(0, 2).withConnection(2, 1).isCorrect());
@@ -343,10 +343,10 @@ namespace BN
 		TEST_METHOD(Simple_function_learning_is_correct)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1, 1 },
-					vector<int>{ 1, 1, 2 },
-					vector<int>{ 2, 2, 1 },
-					vector<int>{ 2, 2, 2 }
+				{ 1, 1, 1 },
+				{ 1, 1, 2 },
+				{ 2, 2, 1 },
+				{ 2, 2, 2 }
 			});
 			BayesianNetwork bn = BayesianNetwork(ds)
 				.withStructureLearned(ds);
@@ -361,16 +361,16 @@ namespace BN
 		TEST_METHOD(Complex_function_learning_is_working)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-				vector<int>{ 1, 1, 1, 4 },
-				vector<int>{ 1, 1, 2, 2 },
-				vector<int>{ 2, 2, 1, 4 },
-				vector<int>{ 2, 2, 2, 4 },
-				vector<int>{ 1, 2, 2, 4 },
-				vector<int>{ 1, 1, 2, 4 },
-				vector<int>{ 2, 2, 1, 4 },
-				vector<int>{ 1, 2, 2, 2 },
-				vector<int>{ 1, 1, 1, 2 },
-				vector<int>{ 2, 1, 2, 4 },
+				{ 1, 1, 1, 4 },
+				{ 1, 1, 2, 2 },
+				{ 2, 2, 1, 4 },
+				{ 2, 2, 2, 4 },
+				{ 1, 2, 2, 4 },
+				{ 1, 1, 2, 4 },
+				{ 2, 2, 1, 4 },
+				{ 1, 2, 2, 2 },
+				{ 1, 1, 1, 2 },
+				{ 2, 1, 2, 4 },
 			});
 			BayesianNetwork bn = BayesianNetwork(ds)
 				.withStructureLearned(ds);
