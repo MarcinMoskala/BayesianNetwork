@@ -118,6 +118,7 @@ BayesianNetwork::Node::Node(BayesianNetwork* network, vector<int> params)
 
 BayesianNetwork::Node::Node(BayesianNetwork* network, vector<int> params, vector<int> parentNodes)
 {
+	this->network = network;
 	this->params = params;
 	this->parentNodes = parentNodes;
 	this->paramDistribution = filledVector(params.size(), 1.0L / params.size());
@@ -172,7 +173,7 @@ long double BayesianNetwork::Node::probabilityOf(int valueParam, map<int, int> k
 }
 
 vector<vector<int>> getAllSituations(vector<vector<int>> parentParams) {
-	if (parentParams.size() == 0)
+	if (parentParams.empty())
 		return {};
 	if (parentParams.size() == 1)
 		return mapTo<int, vector<int>>(parentParams.at(0), [](int i) -> vector<int> {	return vector<int> { i }; });

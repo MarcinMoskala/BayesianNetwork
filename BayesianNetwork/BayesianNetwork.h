@@ -11,7 +11,6 @@ public:
 	class Node;
 private:
 	vector<Node> nodes;
-	void learnParams(DataSet dataSet);
 public:
 	BayesianNetwork(DataSet dataSet);
 	BayesianNetwork withParamsLearned(DataSet dataSet);
