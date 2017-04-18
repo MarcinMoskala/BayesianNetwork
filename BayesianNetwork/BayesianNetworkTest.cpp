@@ -156,11 +156,16 @@ namespace BN
 
 			Assert::AreEqual(33.0 / 54, bn.probabilityOf(0, 1, map<int, int> { make_pair(2, 2) }), 0.01);
 		}
+	};
+
+	TEST_CLASS(BayesianNetwork_quality_function_tests)
+	{
+	public:
 
 		TEST_METHOD(Quality_function_is_returning_lesstthen0_value)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-					vector<int>{ 1, 1, 1 },
+				vector<int>{ 1, 1, 1 },
 					vector<int>{ 1, 1, 2 },
 					vector<int>{ 2, 1, 2 },
 					vector<int>{ 1, 2, 1 },
