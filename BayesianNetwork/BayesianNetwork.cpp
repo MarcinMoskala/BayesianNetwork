@@ -128,7 +128,7 @@ bool parentsDoesNotContainsId(BayesianNetwork* net, BayesianNetwork::Node n, int
 		return true;
 	}
 	int i = indexOf(p, id);
-	if (i > 0 && i < p.size()) {
+	if (i >= 0 && i < p.size()) {
 		return false;
 	}
 

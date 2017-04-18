@@ -19,10 +19,6 @@ namespace BN
 	{
 	public:
 
-		void assertIsDifferent(BayesianNetwork& b1, BayesianNetwork& b2) {
-
-		}
-
 		TEST_METHOD(Copying_constructor_test)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
@@ -253,7 +249,12 @@ namespace BN
 
 			Assert::IsTrue(newQF < prevQF);
 		}
+	};
 
+
+	TEST_CLASS(BayesianNetwork_structure_is_correct_tests)
+	{
+	public:
 		TEST_METHOD(Single_connection_is_always_correct)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
@@ -270,7 +271,7 @@ namespace BN
 			Assert::IsTrue(BayesianNetwork(ds).withConnection(0, 1).isCorrect());
 		}
 
-		TEST_METHOD(V_connections_is_correct)
+		TEST_METHOD(V_connections_are_correct)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
 				vector<int>{ 1, 1, 1 },
@@ -283,7 +284,7 @@ namespace BN
 			Assert::IsTrue(BayesianNetwork(ds).withConnection(1, 0).withConnection(2, 0).isCorrect());
 		}
 
-		TEST_METHOD(A_connections_is_correct)
+		TEST_METHOD(A_connections_are_correct)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
 				vector<int>{ 1, 1, 1 },
@@ -296,17 +297,35 @@ namespace BN
 			Assert::IsTrue(BayesianNetwork(ds).withConnection(0, 1).withConnection(0, 2).isCorrect());
 		}
 
+		TEST_METHOD(Self_connections_are_not_correct)
+		{
+			DataSet ds = DataSet(vector<vector<int>>{
+				vector<int>{ 1, 1, 1 },
+					vector<int>{ 1, 1, 2 },
+					vector<int>{ 2, 2, 1 },
+					vector<int>{ 2, 2, 2 }
+			});
+			Assert::IsFalse(BayesianNetwork(ds).withConnection(0, 0).isCorrect());
+			Assert::IsFalse(BayesianNetwork(ds).withConnection(1, 1).isCorrect());
+			Assert::IsFalse(BayesianNetwork(ds).withConnection(2, 2).isCorrect());
+		}
+	};
+
+
+	TEST_CLASS(BayesianNetwork_learninig_tests)
+	{
+	public:
 		TEST_METHOD(Simple_function_learning_is_correct)
 		{
 			DataSet ds = DataSet(vector<vector<int>>{
-					vector<int>{ 1, 1, 1 },
+				vector<int>{ 1, 1, 1 },
 					vector<int>{ 1, 1, 2 },
 					vector<int>{ 2, 2, 1 },
 					vector<int>{ 2, 2, 2 }
 			});
 			BayesianNetwork bn = BayesianNetwork(ds);
 			//	.withStructureLearned(ds);
-		
+
 			Assert::IsTrue(bn.haveConnection(0, 1) || bn.haveConnection(1, 0));
 			Assert::IsFalse(
 				bn.haveConnection(1, 2) || bn.haveConnection(0, 2) ||
@@ -314,4 +333,4 @@ namespace BN
 			);
 		}
 	};
-}
+};
