@@ -39,6 +39,18 @@ namespace BayesianNetwork
 			Assert::AreEqual(dataPoint, data.getDataPoints());
 		}
 
+		TEST_METHOD(getDataPoints_is_returning_what_it_takes_for_complex)
+		{
+			auto dataPoint = vector<vector<int>>{
+				vector<int>{ 1, 1, 9 },
+				vector<int>{ 2, 10, 2 },
+				vector<int>{ 2, 1, 1 },
+				vector<int>{ 1, 10, 4 }
+			};
+			DataSet data = DataSet(dataPoint);
+			Assert::AreEqual(dataPoint, data.getDataPoints());
+		}
+
 		TEST_METHOD(Correct_labels_creation_test)
 		{
 			DataSet data = DataSet(vector<vector<int>>{
