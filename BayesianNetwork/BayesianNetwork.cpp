@@ -112,10 +112,10 @@ long double BayesianNetwork::qualityFunction(DataSet dataSet)
 		auto knowlagdeAboutEverything = mapToMapIndexed<int, int, int>(point, [](int i, int index) -> pair<int, int> { return make_pair(index, i); });
 		for (int i = 0; i < point.size(); i++) {
 			auto knowladge = mapFilter(knowlagdeAboutEverything, [i](int nodeIndex, int value) -> bool { return nodeIndex != i; });
-			r *= probabilityOf(i, point.at(i), knowladge);
+			r += probabilityOf(i, point.at(i), knowladge);
 		}
 	}
-	return r;
+	return r/ dataSet.dataPointsNum() / dataSet.paramsNum();
 }
 
 // TODO Copy

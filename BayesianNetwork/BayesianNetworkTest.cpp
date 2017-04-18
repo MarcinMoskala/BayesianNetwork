@@ -180,5 +180,29 @@ namespace BN
 			bn = bn.withParamsLearned(ds);
 			Assert::IsTrue(bn.qualityFunction(ds) < 1.0L);
 		}
+
+		TEST_METHOD(Quality_function_is_bigger_when_connection_is_correct)
+		{
+			DataSet ds = DataSet(vector<vector<int>>{
+				vector<int>{ 1, 1, 1 },
+				vector<int>{ 1, 1, 2 },
+				vector<int>{ 2, 2, 1 },
+				vector<int>{ 2, 2, 2 }
+			});
+			BayesianNetwork bn = BayesianNetwork(ds);
+			auto prevQF = bn
+				.withParamsLearned(ds)
+				.qualityFunction(ds);
+
+			auto newQF = bn.withConnection(1, 0)
+				.withParamsLearned(ds)
+				.qualityFunction(ds);
+			Assert::IsTrue(newQF > prevQF);
+
+			newQF = bn.withConnection(0, 1)
+				.withParamsLearned(ds)
+				.qualityFunction(ds);
+			Assert::IsTrue(newQF > prevQF);
+		}
 	};
 }
