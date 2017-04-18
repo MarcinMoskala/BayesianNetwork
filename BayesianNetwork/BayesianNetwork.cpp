@@ -133,17 +133,20 @@ BayesianNetwork::Node::Node(const Node& n):
 {
 }
 
-long double BayesianNetwork::Node::possibilityOf(vector<int> situation, map<int, int> knowladge) {
-	long double p = 0.0L;
+long double BayesianNetwork::Node::possibilityOf(vector<int> situation, map<int, int> knowladge, vector<Node> parents) {
+	long double p = 1.0L;
 	for (int i = 0; i < situation.size(); i++) {
 		int parentIndex = parentNodes.at(i);
 		auto it = knowladge.find(parentIndex);
 		if (it == knowladge.end()) {
 			// No knowladge about this param
-			p *= paramDistribution.at(parentIndex);
+			auto parent = parents.at(i);
+			auto valueOfParam = situation.at(i);
+			auto indexOfValueOfParam = indexOf(parent.params, valueOfParam);
+			p *= parent.paramDistribution.at(indexOfValueOfParam);
 		}
 		else if (it->second == situation.at(i)) {
-			return 1.0L;
+			p *= 1.0L;
 		}
 		else {
 			return 0.0L;
@@ -163,11 +166,13 @@ long double BayesianNetwork::Node::probabilityOf(int valueParam, map<int, int> k
 	else 
 	{
 		long double finalP = 0.0L;
+		vector<Node> parents = mapTo<int, Node>(parentNodes, [this](int i) -> Node { return network->getNodes().at(i); });
 		for (auto const &prob : conditionalProbability) {
 			auto situation = prob.first;
 			auto paramProbabilities = prob.second;
+			auto situationPossibility = possibilityOf(situation, knowladge, parents);
 			auto p = paramProbabilities.at(indexOfParam);
-			finalP += p * possibilityOf(situation, knowladge);
+			finalP += p * situationPossibility;
 		}
 		return finalP;
 	}

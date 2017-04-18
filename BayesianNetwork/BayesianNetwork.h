@@ -36,7 +36,7 @@ public:
 		//List of values indexes for next parents to probability od properties
 		map<vector<int>, vector<long double>> conditionalProbability = {};
 		friend class BayesianNetwork;
-		long double possibilityOf(vector<int> situation, map<int, int> knowladge);
+		long double possibilityOf(vector<int> situation, map<int, int> knowladge, vector<Node> parents);
 
 	public:
 		Node(BayesianNetwork* network, vector<int> params);
