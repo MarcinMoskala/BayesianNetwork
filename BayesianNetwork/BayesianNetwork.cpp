@@ -2,6 +2,7 @@
 #include "BayesianNetwork.h"
 #include "Templates.cpp"
 
+#pragma once
 vector<vector<long double>> matrixOf(int colNum, int rowNum, long double value) {
 	vector<vector<long double>> m = {};
 	for (int i = 0; i < rowNum; i++) {
@@ -37,7 +38,7 @@ BayesianNetwork::~BayesianNetwork()
 {
 }
 
-BayesianNetwork::BayesianNetwork(DataSet dataSet)
+BayesianNetwork::BayesianNetwork(DataSet<int> dataSet)
 {
 	nodes = vector<Node>{};
 	for (int i = 0; i < dataSet.paramsNum(); i++) {
@@ -47,7 +48,7 @@ BayesianNetwork::BayesianNetwork(DataSet dataSet)
 	}
 }
 
-BayesianNetwork BayesianNetwork::withParamsLearned(DataSet dataSet)
+BayesianNetwork BayesianNetwork::withParamsLearned(DataSet<int> dataSet)
 {
 	auto bn = BayesianNetwork(*this);
 	bn.nodes = mapIndexed<Node, Node>(nodes, [dataSet](Node node, int index) -> Node {
@@ -56,7 +57,7 @@ BayesianNetwork BayesianNetwork::withParamsLearned(DataSet dataSet)
 	return bn;
 }
 
-BayesianNetwork bestOnGreedyLearn(BayesianNetwork bn, DataSet ds) {
+BayesianNetwork bestOnGreedyLearn(BayesianNetwork bn, DataSet<int> ds) {
 	int nodesNum = bn.getNodes().size();
 	BayesianNetwork bestBn = bn;
 	long double bestBnResult = bn.withParamsLearned(ds).qualityFunction(ds);
@@ -95,7 +96,7 @@ BayesianNetwork bestOnGreedyLearn(BayesianNetwork bn, DataSet ds) {
 	}
 }
 
-BayesianNetwork BayesianNetwork::withStructureLearned(DataSet dataSet)
+BayesianNetwork BayesianNetwork::withStructureLearned(DataSet<int> dataSet)
 {
 	// Brute force algorithm
 	return bestOnGreedyLearn(BayesianNetwork(*this), dataSet);
@@ -161,9 +162,9 @@ vector<long double> BayesianNetwork::evaluate(vector<int> entry)
 	});
 }
 
-long double BayesianNetwork::qualityFunction(DataSet dataSet)
+long double BayesianNetwork::qualityFunction(DataSet<int> dataSet)
 {
-	auto dataPoints = dataSet.getDataPoints();
+	vector<vector<int>> dataPoints = dataSet.getDataPoints();
 	long double r = 1.0L;
 	for (const auto point : dataPoints) {
 		auto knowlagdeAboutEverything = mapToMapIndexed<int, int, int>(point, [](int i, int index) -> pair<int, int> { return make_pair(index, i); });
@@ -274,7 +275,7 @@ map<int, int> situationAsKnowladge(vector<int> situation, vector<int> parentNode
 	return k;
 }
 
-vector<long double> countDistribution(DataSet dataSet, int index, int paramSize, map<int, int> knowladge) {
+vector<long double> countDistribution(DataSet<int> dataSet, int index, int paramSize, map<int, int> knowladge) {
 	vector<int> allCounted = dataSet.countParams(index, knowladge);
 	int sumOfAll = sum(allCounted);
 
@@ -285,7 +286,7 @@ vector<long double> countDistribution(DataSet dataSet, int index, int paramSize,
 	return paramDistribution;
 }
 
-BayesianNetwork::Node BayesianNetwork::Node::withParamsLearned(DataSet dataSet, int index)
+BayesianNetwork::Node BayesianNetwork::Node::withParamsLearned(DataSet<int> dataSet, int index)
 {
 	paramDistribution = countDistribution(dataSet, index, params.size(), map<int, int> {});
 	

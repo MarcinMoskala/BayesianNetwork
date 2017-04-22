@@ -21,7 +21,7 @@ namespace BN
 
 		TEST_METHOD(Copying_constructor_test)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 					{ 1, 1, 1 },
 					{ 1, 1, 2 },
 					{ 2, 1, 2 },
@@ -40,7 +40,7 @@ namespace BN
 
 		TEST_METHOD(BayesianNetwork_from_data_model_have_nodes_for_each_row)
 		{
-			BayesianNetwork bn = BayesianNetwork(DataSet(vector<vector<int>>{
+			BayesianNetwork bn = BayesianNetwork(DataSet<int>(vector<vector<int>>{
 					{ 1, 1, 2 },
 					{ 2, 1, 2 },
 					{ 1, 1, 2 },
@@ -51,7 +51,7 @@ namespace BN
 
 		TEST_METHOD(When_there_is_only_one_row_then_probability_of_it_is_1_ant_for_other_values_it_is_0)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 					{ 1, 2, 3 }
 			});
 			BayesianNetwork bn = BayesianNetwork(ds);
@@ -64,7 +64,7 @@ namespace BN
 
 		TEST_METHOD(Equaly_distributed_elements_are_equaly_probable)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 					{ 1 },
 					{ 2 }
 			});
@@ -76,7 +76,7 @@ namespace BN
 
 		TEST_METHOD(Simple_probability_check_with_no_restrictions)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 					{ 1 },
 					{ 1 },
 					{ 1 },
@@ -90,7 +90,7 @@ namespace BN
 
 		TEST_METHOD(Simple_connections_can_excist_and_be_deleted)
 		{
-			BayesianNetwork bn = BayesianNetwork(DataSet(vector<vector<int>>{
+			BayesianNetwork bn = BayesianNetwork(DataSet<int>(vector<vector<int>>{
 					{ 1, 1 },
 					{ 1, 1 },
 					{ 1, 2 },
@@ -104,7 +104,7 @@ namespace BN
 
 		TEST_METHOD(Simple_probability_check_with_restrictions_and_full_knowladge)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 					{ 1, 1 },
 					{ 1, 1 },
 					{ 1, 2 },
@@ -121,7 +121,7 @@ namespace BN
 
 		TEST_METHOD(Simple_probability_check_with_restrictions_and_partial_knowladge)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 					{ 1, 1, 1 },
 					{ 1, 1, 2 },
 					{ 1, 2, 1 },
@@ -145,7 +145,7 @@ namespace BN
 
 		TEST_METHOD(Transitive_probability_check_with_restrictions_and_partial_knowladge)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 				{ 1, 1, 1 },
 				{ 1, 1, 2 },
 				{ 2, 1, 2 },
@@ -162,7 +162,7 @@ namespace BN
 
 		TEST_METHOD(Evaluation_function_simple_test)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 				{ 1, 1, 1 },
 				{ 1, 1, 2 },
 				{ 2, 1, 2 },
@@ -184,7 +184,7 @@ namespace BN
 
 		TEST_METHOD(Quality_function_is_returning_lesstthen0_value)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 				{ 1, 1, 1 },
 				{ 1, 1, 2 },
 				{ 2, 1, 2 },
@@ -203,7 +203,7 @@ namespace BN
 
 		TEST_METHOD(Quality_function_is_bigger_when_connection_is_correct)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 					{ 1, 1, 1 },
 					{ 1, 1, 2 },
 					{ 2, 2, 1 },
@@ -227,7 +227,7 @@ namespace BN
 
 		TEST_METHOD(Quality_function_is_worse_when_connection_is_useless)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 				{ 1, 1, 1 },
 				{ 1, 1, 2 },
 				{ 2, 2, 1 },
@@ -257,7 +257,7 @@ namespace BN
 	public:
 		TEST_METHOD(Single_connection_is_always_correct)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 				{ 1, 1, 1 },
 				{ 1, 1, 2 },
 				{ 2, 2, 1 },
@@ -273,7 +273,7 @@ namespace BN
 
 		TEST_METHOD(V_connections_are_correct)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 				{ 1, 1, 1 },
 				{ 1, 1, 2 },
 				{ 2, 2, 1 },
@@ -286,7 +286,7 @@ namespace BN
 
 		TEST_METHOD(A_connections_are_correct)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 				{ 1, 1, 1 },
 				{ 1, 1, 2 },
 				{ 2, 2, 1 },
@@ -299,7 +299,7 @@ namespace BN
 
 		TEST_METHOD(Self_connections_are_not_correct)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 				{ 1, 1, 1 },
 				{ 1, 1, 2 },
 				{ 2, 2, 1 },
@@ -312,7 +312,7 @@ namespace BN
 
 		TEST_METHOD(Loops_are_not_correct)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 				{ 1, 1, 1 },
 				{ 1, 1, 2 },
 				{ 2, 2, 1 },
@@ -325,7 +325,7 @@ namespace BN
 
 		TEST_METHOD(Long_loops_are_not_correct)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 				{ 1, 1, 1 },
 				{ 1, 1, 2 },
 				{ 2, 2, 1 },
@@ -342,7 +342,7 @@ namespace BN
 	public:
 		TEST_METHOD(Simple_function_learning_is_correct)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 				{ 1, 1, 1 },
 				{ 1, 1, 2 },
 				{ 2, 2, 1 },
@@ -360,7 +360,7 @@ namespace BN
 
 		TEST_METHOD(Complex_function_learning_is_working)
 		{
-			DataSet ds = DataSet(vector<vector<int>>{
+			DataSet<int> ds = DataSet<int>(vector<vector<int>>{
 				{ 1, 1, 1, 4 },
 				{ 1, 1, 2, 2 },
 				{ 2, 2, 1, 4 },

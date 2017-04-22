@@ -19,7 +19,7 @@ namespace BN
 	public:
 		TEST_METHOD(Rows_cols_test)
 		{
-			DataSet data = DataSet(vector<vector<int>>{
+			DataSet<int> data = DataSet<int>(vector<vector<int>>{
 				vector<int>{ 1, 2 },
 					vector<int>{ 4, 5 },
 					vector<int>{ 7, 8 }
@@ -35,7 +35,7 @@ namespace BN
 				vector<int>{ 4, 5 },
 				vector<int>{ 7, 8 }
 			};
-			DataSet data = DataSet(dataPoint);
+			DataSet<int> data = DataSet<int>(dataPoint);
 			Assert::AreEqual(dataPoint, data.getDataPoints());
 		}
 
@@ -47,13 +47,13 @@ namespace BN
 				vector<int>{ 2, 1, 1 },
 				vector<int>{ 1, 10, 4 }
 			};
-			DataSet data = DataSet(dataPoint);
+			DataSet<int> data = DataSet<int>(dataPoint);
 			Assert::AreEqual(dataPoint, data.getDataPoints());
 		}
 
 		TEST_METHOD(Correct_labels_creation_test)
 		{
-			DataSet data = DataSet(vector<vector<int>>{
+			DataSet<int> data = DataSet<int>(vector<vector<int>>{
 				vector<int>{ 1, 2, 3 },
 					vector<int>{ 4, 5, 6 },
 					vector<int>{ 7, 8, 9 }
@@ -65,7 +65,7 @@ namespace BN
 
 		TEST_METHOD(Correct__reversed_order_labels_creation_test)
 		{
-			DataSet data = DataSet(vector<vector<int>>{
+			DataSet<int> data = DataSet<int>(vector<vector<int>>{
 				vector<int>{ 9, 8, 7 },
 				vector<int>{ 6, 5, 4 },
 				vector<int>{ 3, 2, 1 }
@@ -77,7 +77,7 @@ namespace BN
 
 		TEST_METHOD(Correct_labels_creation_test_with_repetitive_labels)
 		{
-			DataSet data = DataSet(vector<vector<int>>{
+			DataSet<int> data = DataSet<int>(vector<vector<int>>{
 				vector<int>{ 1, 1, 2 },
 				vector<int>{ 2, 1, 2 },
 				vector<int>{ 1, 1, 2 },
@@ -90,7 +90,7 @@ namespace BN
 
 		TEST_METHOD(Single_values_label_test)
 		{
-			DataSet data = DataSet(vector<vector<int>>{
+			DataSet<int> data = DataSet<int>(vector<vector<int>>{
 				vector<int>{ 1, 10, 100 }
 			});
 			Assert::AreEqual(vector<int> { 1 }, data.paramsForColumn(0));
@@ -100,7 +100,7 @@ namespace BN
 
 		TEST_METHOD(Data_with_next_values_are_returning_next_values)
 		{
-			DataSet data = DataSet(vector<vector<int>>{
+			DataSet<int> data = DataSet<int>(vector<vector<int>>{
 				vector<int>{ 0 },
 				vector<int>{ 1 },
 				vector<int>{ 2 },
@@ -111,7 +111,7 @@ namespace BN
 
 		TEST_METHOD(Data_for_single_line_are_filled_with_zeroes)
 		{
-			DataSet data = DataSet(vector<vector<int>>{
+			DataSet<int> data = DataSet<int>(vector<vector<int>>{
 				vector<int>{ 1, 10, 100 }
 			});
 			Assert::AreEqual(vector<int> { 0 }, data.getDataInColumn(0));
@@ -121,7 +121,7 @@ namespace BN
 
 		TEST_METHOD(Data_for_single_two_line_are_filled_correctly_with_zeroes_and_ones)
 		{
-			DataSet data = DataSet(vector<vector<int>>{
+			DataSet<int> data = DataSet<int>(vector<vector<int>>{
 					vector<int>{ 1, 2 },
 					vector<int>{ 2, 2 },
 					vector<int>{ 1, 1 }
@@ -135,7 +135,7 @@ namespace BN
 
 		TEST_METHOD(Element_counting_with_no_restrictions)
 		{
-			DataSet data = DataSet(vector<vector<int>>{
+			DataSet<int> data = DataSet<int>(vector<vector<int>>{
 				vector<int>{ 1, 2 },
 					vector<int>{ 2, 2 },
 					vector<int>{ 1, 1 },
@@ -147,7 +147,7 @@ namespace BN
 
 		TEST_METHOD(Simple_element_counting_with_restrictions)
 		{
-			DataSet data = DataSet(vector<vector<int>>{
+			DataSet<int> data = DataSet<int>(vector<vector<int>>{
 				vector<int>{ 1, 2, 1 },
 					vector<int>{ 2, 2, 0 },
 					vector<int>{ 1, 1, 0 },
@@ -160,7 +160,7 @@ namespace BN
 
 		TEST_METHOD(Count_params_with_single_different)
 		{
-			DataSet data = DataSet(vector<vector<int>>{
+			DataSet<int> data = DataSet<int>(vector<vector<int>>{
 					vector<int>{ 1 },
 					vector<int>{ 1 },
 					vector<int>{ 1 },
